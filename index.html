@@ -106,6 +106,21 @@
 <main class="content" role="main">
 
 
+    <article class="post tag-ruby tag-rack">
+        <header class="post-header">
+            <span class="post-meta"><time datetime="2015-07-02">02 Jul 2015</time> </span>
+            <h2 class="post-title"><a href="https://cncgl.github.io/2015/07/02/Ruby-Rack.html">Ruby の Rack によるワンライナー</a></h2>
+
+        </header>
+        <section class="post-excerpt">
+            <p>Perl はいまひとつ一般的でないので Ruby でのワンライナーを考える。 Ruby のインストールはぐぐらびりてぃが高いので省略する。 Rack のインストール gem install rack ワンライナー rackup -b 'run lambda {|env| ["200", {"Content-Type" =&gt; "text/html", ["good rack"]] }' ポート番号9292 で起動する。 アクセスカウンター 昔懐かしいアクセスカウンターを考える。今風なら JSON 出力の方がいいかもしれない。 さすがに１行では無理だったので、ファイルを作った。 count_app.rb class CountApp   @@count = 0   def call(env)     @@count += 1     [       200,       {'Conte&hellip;</p>
+        </section>
+        <a class="button read-more right small" href="https://cncgl.github.io/2015/07/02/Ruby-Rack.html">Read more</a>
+        <aside class="tags fi-pricetag-multiple">Posted on <a href="https://cncgl.github.io/tag/ruby">ruby</a>, <a href="https://cncgl.github.io/tag/rack"> rack</a></aside>
+        <div class="clearfix"></div>
+    </article>
+
+
     <article class="post tag-perl">
         <header class="post-header">
             <span class="post-meta"><time datetime="2015-07-02">02 Jul 2015</time> </span>
