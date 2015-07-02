@@ -46,6 +46,4 @@ $ plackup -e "sub { [ 200, ['Content-Type' => 'text/plain'], [ 'Hello World' ], 
 
 
 
------
-
 ちょっと手順が違っているかもしれないので、検証して間違ってたら直します。
