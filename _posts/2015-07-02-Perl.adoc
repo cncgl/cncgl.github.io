@@ -1,2 +1,51 @@
-# Perlのインストールとワンライナー
+= Perlのインストールとワンライナー
 
+:hp-tags: perl
+
+Perl のインストールをしたら結構苦労したのでそのメモ。
+
+Perl には cpan と改良版の cpanm があるのだけれど、cpan はあまり使われなくなっているらしく cpanm を使用する。
+
+### cpanm のインストール
+
+```
+$ mkdir bin && cd ~/bin
+$ curl -LOk http://xrl.us/cpanm
+$ chmod +x cpanm
+```
+
+### local::lib をインストール
+
+```
+$ export PERL_LOCAL_LIB_ROOT="$PERL_LOCAL_LIB_ROOT:$HOME/perl5"
+$ export PERL_MM_OPT="INSTALL_BASE=$HOME/perl5"
+$ export PERL5LIB="$HOME/perl5/lib/perl5:$PERL5LIB"
+$ export PATH=$HOME/perl5/bin:$PATH
+$ cpanm local::lib
+```
+
+### cpanm のアップデート
+
+```
+$ cpanm --self-upgrade
+```
+
+### plack のインストール
+
+```
+$ cpanm Task::Plack
+```
+
+### ワンライナーの例
+
+5000番ポートで起動します。
+
+```
+$ plackup -e "sub { [ 200, ['Content-Type' => 'text/plain'], [ 'Hello World' ], ]; }"
+```
+
+
+
+-----
+
+ちょっと手順が違っているかもしれないので、検証して間違ってたら直します。
