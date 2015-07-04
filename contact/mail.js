@@ -1,4 +1,4 @@
-var mailkcocoa = new MilkCocoa('vueibn3d9q5.mlkcca.com'),
+var milkcocoa = new MilkCocoa('vueibn3d9q5.mlkcca.com'),
   mesDS = milkcocoa.dataStore('message'),
   nameEl, mailEl, msgEl;
 
