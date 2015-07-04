@@ -1,42 +1,32 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>CONTACT</title>
-  </head>
-  <body>
-    <style><!--
-#ClicktxBlogMail {
-    font-size:11px;
-    border:1px solid #ccc;
-    padding:7px;
-    width:144px;
-}
-#ClicktxBlogMail div{
-    margin-top:7px;
-}
-#ClicktxBlogMail input, #ClicktxBlogMail textarea{
-    font-size:11px;
-    width:110px;
-}
-#ClicktxBlogMail textarea{
-    height:100px;
-}
-#ClicktxBlogMail input.button{
-    width:auto;
-}
-#ClicktxBlogMailCopyRight{
-}
---></style>
-<!-- ここから -->
-<script>
-    var ClicktxBlogMail={};
-    ClicktxBlogMail.UID='9826975ba9d533991d80585049b8e2c0c363';
-    (function(){var p=(("https:"==document.location.protocol)?"https://":"http://");
-    document.write('<scri'+'pt src="'+p+'tools.clicktx.jp/blogmail/js/blogMail.js" charset="UTF-8"></scri'+'pt>');})();
-</script>
-<!-- ここまで -->
-
-    
-  </body>
+<html lang="ja">
+<head>
+ <meta charset="utf-8" />
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="row">
+    <div class="col-md-8 col-md-offset-2 b-l bg-white bg-auto">
+          <div class="p-md bg-light lt b-b font-bold">Contact</div>
+          <form role="form" class="p-md col-md-6 ng-pristine ng-valid">
+            <div class="form-group">
+              <label>Name</label>
+              <input id="name" type="text" class="form-control" >
+            </div>
+            <div class="form-group">
+              <label>Email address</label>
+              <input id="mail" type="email" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>Message</label>
+              <textarea id="msg" rows="5"  cols="20" class="form-control"></textarea>
+            </div>
+            <button id="submit" type="button" class="btn btn-info m-t" onClick="clickEvent()">Submit</button>
+          </form>
+        </div>
+    </div>
+    <script src="http://cdn.mlkcca.com/v2.0.0/milkcocoa.js"></script>
+    <script src="./mail.js"></script>
+</body>
 </html>
+
