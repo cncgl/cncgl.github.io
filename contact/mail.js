@@ -1,6 +1,6 @@
-ocoa = new MilkCocoa('vueibn3d9q5.mlkcca.com');
-var mesDS = milkcocoa.dataStore('message');
-var nameEl, mailEl, msgEl;
+var mailkcocoa = new MilkCocoa('vueibn3d9q5.mlkcca.com'),
+  mesDS = milkcocoa.dataStore('message'),
+  nameEl, mailEl, msgEl;
 
 window.onload = function(){
   nameEl = document.getElementById("name");
