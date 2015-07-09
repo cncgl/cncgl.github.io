@@ -38,12 +38,37 @@ $ npm -v
 
 ## hubot のインストール
 
+hubot をインストールします。hubot は coffee で書かれているため coffee-script もインストールします。
+
+```
+$ npm i -g hubot coffee-script
+```
+
+## redis のインストール
+
+hubot はデータの永続化に redis を使用するので redis をインストールします。CentOS の場合 EPEL リポジトリが必要です。
+
+```
+$ sudo rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+$ sudo yum install -y redis
+$ sudo chkconfig redis on
+$ sudo service redis start
+```
+
+## hubot のひな形作成
+
+hubot のひな形を作成します。昔のバージョンでは hubot -c <botname> で作れましたが今は非推奨となり yoeman による生成が推奨されています。
+
 
 
 
 
 ## 参考
 npm - https://github.com/npm/npm
+
+pm2 - https://github.com/Unitech/pm2
+
+GitHub製フレームワークHubotの概要とインストール、チャットアプリと連携する基本的な使い方 - http://www.atmarkit.co.jp/ait/articles/1408/20/news035.html
 
 Docker + Yeoman + Hubot + Slack で簡単bot作成 - http://blog.fenneclab.com/docker-yeoman-hubot-slack/
 
