@@ -43,6 +43,7 @@ $ npm -v
 
 
 ## 参考
+npm - https://github.com/npm/npm/tree/v3.1.0
 
 Docker + Yeoman + Hubot + Slack で簡単bot作成 - http://blog.fenneclab.com/docker-yeoman-hubot-slack/
 
