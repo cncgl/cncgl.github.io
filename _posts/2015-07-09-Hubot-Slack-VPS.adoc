@@ -59,6 +59,78 @@ $ sudo service redis start
 
 hubot のひな形を作成します。昔のバージョンでは hubot -c <botname> で作成しましたが、今は非推奨となり yoeman による生成が推奨されています。
 
+```
+$ npm i -g yo generator-hubot
+$ mkdir hubot1 && cd $_
+$ yo hubot
+```
+
+いろいろ聞かれますので、adapter は slack にします。bot 名は condroid として以後説明します。
+
+image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicMkhsYk9vUGtHRGs[]
+
+## 動作確認
+
+### shell で確認
+
+きちんとインストールされたか確認します。bin/hubot を bin/hubot.sh にリネームします。これは後に pm2 でデーモン化するときに必要になります。今回 heroku は使いませんので、heroku の外部スクリプトを削除します。
+
+```
+$ mv bin/hubot bin/hubot.sh
+```
+external-scripts.json
+```
+[
+  "hubot-diagnostics",
+  "hubot-help",
+  "hubot-heroku-keepalive",  # この行を削除
+  "hubot-google-images",
+  "hubot-google-translate",
+  "hubot-pugme",
+  "hubot-maps",
+  "hubot-redis-brain",
+  "hubot-rules",
+  "hubot-shipit"
+]
+```
+
+package.json
+```
+{
+  "name": "condroid",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Shigeru Kondou <concigel@gmail.com>",
+  "description": "A simple helpful robot for your Company",
+  "dependencies": {
+    "hubot": "^2.13.2",
+    "hubot-diagnostics": "0.0.1",
+    "hubot-google-images": "^0.1.5",
+    "hubot-google-translate": "^0.2.0",
+    "hubot-help": "^0.1.1",
+    "hubot-heroku-keepalive": "0.0.4",   # この行を削除
+    "hubot-maps": "0.0.2",
+    "hubot-pugme": "^0.1.0",
+    "hubot-redis-brain": "0.0.3",
+    "hubot-rules": "^0.1.1",
+    "hubot-scripts": "^2.16.1",
+    "hubot-shipit": "^0.2.0",
+    "hubot-slack": "^3.3.0"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}    
+```
+shell アダプターを使用して確認します。<bot name> help でこの bot の持っているコマンドが表示されますのでいろいろ試してください。ここでは ping コマンドで確認しています。
+
+```
+$ bin/hubot.sh -a shell
+condroid > condroid ping
+PONG
+
+```
+### slack で確認
 
 
 
