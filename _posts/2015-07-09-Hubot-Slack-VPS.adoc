@@ -1,3 +1,15 @@
 = Hubot Slack を VPS へインストール
 
-#hubot, slack
+:hp-tags: hubot, slack
+
+## はじめに
+
+hubotを VPS にインストールする手順です。同様のエントリーは多いのですが、
+
+
+## 参考
+
+Docker + Yeoman + Hubot + Slack で簡単bot作成 - http://blog.fenneclab.com/docker-yeoman-hubot-slack/
+
+
+
