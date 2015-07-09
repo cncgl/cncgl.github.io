@@ -57,7 +57,8 @@ $ sudo service redis start
 
 ## hubot のひな形作成
 
-hubot のひな形を作成します。昔のバージョンでは hubot -c <botname> で作れましたが今は非推奨となり yoeman による生成が推奨されています。
+hubot のひな形を作成します。昔のバージョンでは hubot -c <botname> で作成しましたが、今は非推奨となり yoeman による生成が推奨されています。
+
 
 
 
