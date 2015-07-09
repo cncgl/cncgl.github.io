@@ -1,4 +1,4 @@
-= Hubot Slack を VPS へインストール
+= Hubot-Slack を VPS へインストール
 
 :hp-tags: hubot, slack
 
