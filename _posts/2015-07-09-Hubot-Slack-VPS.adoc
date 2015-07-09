@@ -130,10 +130,51 @@ condroid > condroid ping
 PONG
 
 ```
-### slack で確認
+CTRL+C で終了します。
 
 
+### Slack で確認
 
+Slack のIntegration 設定にて Hubot Integration を追加します。名前は先ほどの bot名にします。
+
+追加すれば、Configured Integrations タブに Hubot がありますので、先ほど追加した設定を選択します。
+
+API Token にアクセストークンがあるのでコピーします。
+
+bin/hubot.sh を開き、環境変数 HUBOT_SLACK_TOKEN を設定します。
+
+bin/hubot.sh
+```
+#!/bin/sh
+
+set -e
+
+npm install
+export PATH="node_modules/.bin:node_modules/hubot/node_modules/.bin:$PATH"
+export HUBOT_SLACK_TOKEN=<API TOKEN>    # この行を追加する。先程の API TOKEN を貼り付ける
+
+exec node_modules/.bin/hubot --adapter slack --name "condroid" "$@"
+```
+
+bin/hubot.sh を実行し、Slack で確認します。
+
+
+image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicV1dGck1WR2lYNVU[]
+
+bot名 <コマンド名> という書き方ができなくなっていて、@<bot名> <コマンド名> とするか、bot にダイレクトメッセージで直接コマンドを叩きます。bot はデフォルトでは #general にしか所属していませんが /invite @<bot 名> で他のチャンネルにも招待できます。
+
+
+## デーモン化
+
+このままだとログインシェルを抜けると Bot も終了しますのでデーモン化します。デーモン化には pm2 を使用します。
+
+```
+$ npm i -g pm2
+$ pm2 start bin/hubot.sh
+```
+pm2 list で一覧が表示され、pm2 でヘルプが表示されますので、参考にしてください。
+
+ではよい hubot ライフを。
 
 
 ## 参考
