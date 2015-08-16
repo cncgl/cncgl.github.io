@@ -5,3 +5,15 @@
 ## ダウンロード
 
 
+## ビルド
+
+make を実行すると、
+
+```
+libpng “png_set_longjmp_fn” not found
+```
+のようなエラーメッセージが出ます。ubuntu にインストールされている libpng は 1.2.49  (/usr/include/libpng12 参照) だからで、png_set_longjmp_fn が追加されたのは libpng-1.4.x からだそうです。そのため http://www.libpng.org/pub/png/libpng.html[libpng] の最新版を取得します。執筆時の最新版は 1.6.18 でした。
+
+```
+
+```
