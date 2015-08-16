@@ -128,6 +128,7 @@ libsdl-image1.2-dev が必要のようなのでインストールします。
 ```
 $ sudo apt-get install libsdl-image1.2-dev
 ```
+
 これでビルドできるかと思います。
 
 ```
