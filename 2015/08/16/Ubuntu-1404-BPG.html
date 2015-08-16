@@ -33,7 +33,7 @@
     <meta property="og:description" content="はじめに BPG(Better Portable Grpahics) は品質の損失なく、ファイルサイズを減らすための画像フォーマットです。以下のブログに検証されているものが詳しいです。 GigazineさんのBPG紹介記事が変なので、技術的に検証してみた所…なんと！ 以下は ubuntu 14.04 においてビルド方法のメモです。 ダウンロード 公式サイトよりダウンロードします。執筆時の最新版は 0.9.5でした。 $ wget http://bellard.org/bpg/libbpg-0.9.5.tar.gz $ tar zxvf libbpg-0..." />
     <meta property="og:url" content="https://cncgl.github.io/2015/08/16/Ubuntu-1404-BPG.html" />
     <meta property="article:published_time" content="2015-08-15T15:00:00.000Z" />
-    <meta property="article:modified_time" content="2015-08-16T11:24:15.478Z" />
+    <meta property="article:modified_time" content="2015-08-16T12:14:33.073Z" />
     <meta property="article:tag" content="BPG" />
     <meta property="article:tag" content="ubuntu" />
     
@@ -57,7 +57,7 @@
     "headline": "Ubuntu 14.04 で BPG をビルドする",
     "url": "https://cncgl.github.io/2015/08/16/Ubuntu-1404-BPG.html",
     "datePublished": "2015-08-15T15:00:00.000Z",
-    "dateModified": "2015-08-16T11:24:15.478Z",
+    "dateModified": "2015-08-16T12:14:33.073Z",
     "keywords": "BPG,  ubuntu",
     "description": "はじめに BPG(Better Portable Grpahics) は品質の損失なく、ファイルサイズを減らすための画像フォーマットです。以下のブログに検証されているものが詳しいです。 GigazineさんのBPG紹介記事が変なので、技術的に検証してみた所…なんと！ 以下は ubuntu 14.04 においてビルド方法のメモです。 ダウンロード 公式サイトよりダウンロードします。執筆時の最新版は 0.9.5でした。 $ wget http://bellard.org/bpg/libbpg-0.9.5.tar.gz $ tar zxvf libbpg-0..."
 }
@@ -179,6 +179,14 @@ $ tar zxvf libbpg-0.9.5.tar.gz</code></pre>
 <h2 id="___3">ビルド</h2>
 <div class="sectionbody">
 <div class="paragraph">
+<p>g&#43;&#43; を使用することになるので g&#43;&#43; をインストールしておきます</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ sudo apt-get install g++</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>make を実行します。</p>
 </div>
 <div class="listingblock">
@@ -189,7 +197,10 @@ $ make</code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>libpng “png_set_longjmp_fn” not found</code></pre>
+<pre class="highlight"><code>bpgdec.c:35:17: fatal error: png.h: そのようなファイルやディレクトリはありません
+ #include &lt;png.h&gt;
+                 ^
+compilation terminated.</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -206,6 +217,14 @@ $ sudo make install</code></pre>
 </div>
 </div>
 <div class="paragraph">
+<p>configure で zlib not found とエラーが出るならば、zlib1g-dev をインストールする必要があります。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ sudo apt-get install zlib1g-dev</code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>インストールされるとヘッダとライブラリは /usr/local/include , /usr/local/lib にそれぞれインストールされます。コンパイラが参照できるよう環境変数を設定します。</p>
 </div>
 <div class="listingblock">
@@ -216,11 +235,33 @@ export LIBRARY_PATH=/usr/local/lib</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>気を取り直してビルドを実行します。</p>
+<p>libbpg-0.9.5 のディレクトリに戻り、ビルドを実行します。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>SDL/SDL_image.h: No such file or directory</code></pre>
+<pre class="highlight"><code>bpgenc.c:33:21: fatal error: jpeglib.h: そのようなファイルやディレクトリはありません
+ #include &lt;jpeglib.h&gt;
+                     ^
+compilation terminated.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>まずは libjpeg がインストールされていない場合、このエラーが出力されます。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ sudo apt-get install libjpeg-dev</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>libjpeg-dev をインストールし、make を実行すると</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>bpgview.c:33:21: fatal error: SDL/SDL.h: そのようなファイルやディレクトリはありません
+ #include &lt;SDL/SDL.h&gt;
+                     ^
+compilation terminated.</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -230,18 +271,48 @@ export LIBRARY_PATH=/usr/local/lib</code></pre>
 <div class="content">
 <pre class="highlight"><code>$ sudo apt-get install apt-file
 $ sudo apt-file update
-$ apt-file search SDL_image.h
-emscripten: /usr/share/emscripten/system/include/SDL/SDL_image.h
-libsdl-image1.2-dev: /usr/include/SDL/SDL_image.h
-libsdl2-image-dev: /usr/include/SDL2/SDL_image.h</code></pre>
+$ apt-file search SDL/SDL.h
+emscripten: /usr/share/emscripten/system/include/SDL/SDL.h
+libsdl1.2-dev: /usr/include/SDL/SDL.h</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>libsdl-image1.2-dev と libsdl2-image-dev が必要のようなのでインストールします。</p>
+<p>どうも libsdl1.2-dev のようなのでこれをインストールします。</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>```
+$ sudo apt-get install libsdl1.2-dev
+```</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>make を続行します。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>$ sudo apt-get install libsdl-image1.2-dev libsdl2-image-dev</code></pre>
+<pre class="highlight"><code>bpgview.c:34:27: fatal error: SDL/SDL_image.h: そのようなファイルやディレクトリはありません
+ #include &lt;SDL/SDL_image.h&gt;
+                           ^
+compilation terminated.</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>再び apt-file で調べます。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ apt-file search SDL/SDL_image.h
+emscripten: /usr/share/emscripten/system/include/SDL/SDL_image.h
+libsdl-image1.2-dev: /usr/include/SDL/SDL_image.h</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>libsdl-image1.2-dev が必要のようなのでインストールします。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ sudo apt-get install libsdl-image1.2-dev</code></pre>
 </div>
 </div>
 <div class="paragraph">
