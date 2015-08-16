@@ -2,18 +2,85 @@
 
 :hp-tags: BPG, ubuntu
 
+
+## はじめに
+
+BPG(Better Portable Grpahics) は品質の損失なく、ファイルサイズを減らすための画像フォーマットです。以下のブログに検証されているものが詳しいです。
+
+
+http://blog.livedoor.jp/blackwingcat/archives/1885528.html[GigazineさんのBPG紹介記事が変なので、技術的に検証してみた所…なんと！]
+
+以下は ubuntu 14.04 においてビルド方法のメモです。
+
+
 ## ダウンロード
+
+http://bellard.org/bpg/[公式サイト]よりダウンロードします。執筆時の最新版は 0.9.5でした。
+
+```
+$ wget http://bellard.org/bpg/libbpg-0.9.5.tar.gz
+$ tar zxvf libbpg-0.9.5.tar.gz
+```
 
 
 ## ビルド
 
-make を実行すると、
+make を実行します。
+
+```
+$ cd libbpg-0.9.5
+$ make
+```
 
 ```
 libpng “png_set_longjmp_fn” not found
 ```
-のようなエラーメッセージが出ます。ubuntu にインストールされている libpng は 1.2.49  (/usr/include/libpng12 参照) だからで、png_set_longjmp_fn が追加されたのは libpng-1.4.x からだそうです。そのため http://www.libpng.org/pub/png/libpng.html[libpng] の最新版を取得します。執筆時の最新版は 1.6.18 でした。
+しかし、このようなエラーメッセージが出ます。ubuntu にインストールされている libpng は 1.2.49  (/usr/include/libpng12 参照) だからで、png_set_longjmp_fn が追加されたのは libpng-1.4.x からだそうです。そのため http://www.libpng.org/pub/png/libpng.html[libpng] の最新版を取得します。執筆時の最新版は 1.6.18 でした。
 
 ```
+$ wget http://prdownloads.sourceforge.net/libpng/libpng-1.6.18.tar.gz
+$ tar zxvf libpng-1.6.18.tar.gz
+$ cd libpng-1.6.18
+$ ./configure
+$ make
+$ sudo make install
+```
+
+インストールされるとヘッダとライブラリは /usr/local/include , /usr/local/lib にそれぞれインストールされます。コンパイラが参照できるよう環境変数を設定します。
 
 ```
+export CPLUS_INCLUDE_PATH=/usr/local/include
+export LD_LIBRARY_PATH=/usr/local/lib
+export LIBRARY_PATH=/usr/local/lib
+```
+
+気を取り直してビルドを実行します。
+
+```
+SDL/SDL_image.h: No such file or directory
+```
+
+これは何でしょう。Deb系パッケージ管理システムには、特定のファイルがどのパッケージ含まれているか調べる apt-file というツールがあります。これで調べてみます。インストールした後、最新の情報に更新する必要があります。
+
+```
+$ sudo apt-get install apt-file
+$ sudo apt-file update
+$ apt-file search SDL_image.h
+emscripten: /usr/share/emscripten/system/include/SDL/SDL_image.h
+libsdl-image1.2-dev: /usr/include/SDL/SDL_image.h
+libsdl2-image-dev: /usr/include/SDL2/SDL_image.h
+
+```
+libsdl-image1.2-dev と libsdl2-image-dev が必要のようなのでインストールします。 
+
+```
+$ sudo apt-get install libsdl-image1.2-dev libsdl2-image-dev
+```
+これでビルドできるかと思います。
+
+```
+$ make
+$ sudo make install
+```
+
+
