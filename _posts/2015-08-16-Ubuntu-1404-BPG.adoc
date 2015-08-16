@@ -25,6 +25,12 @@ $ tar zxvf libbpg-0.9.5.tar.gz
 
 ## ビルド
 
+g{plus}{plus} を使用することになるので g{plus}{plus} をインストールしておきます
+
+```
+$ sudo apt-get install g++
+```
+
 make を実行します。
 
 ```
@@ -33,7 +39,11 @@ $ make
 ```
 
 ```
-libpng “png_set_longjmp_fn” not found
+bpgdec.c:35:17: fatal error: png.h: そのようなファイルやディレクトリはありません
+ #include <png.h>
+                 ^
+compilation terminated.
+
 ```
 しかし、このようなエラーメッセージが出ます。ubuntu にインストールされている libpng は 1.2.49  (/usr/include/libpng12 参照) だからで、png_set_longjmp_fn が追加されたのは libpng-1.4.x からだそうです。そのため http://www.libpng.org/pub/png/libpng.html[libpng] の最新版を取得します。執筆時の最新版は 1.6.18 でした。
 
@@ -45,7 +55,11 @@ $ ./configure
 $ make
 $ sudo make install
 ```
+configure で zlib not found とエラーが出るならば、zlib1g-dev をインストールする必要があります。
 
+```
+$ sudo apt-get install zlib1g-dev
+```
 インストールされるとヘッダとライブラリは /usr/local/include , /usr/local/lib にそれぞれインストールされます。コンパイラが参照できるよう環境変数を設定します。
 
 ```
@@ -54,27 +68,65 @@ export LD_LIBRARY_PATH=/usr/local/lib
 export LIBRARY_PATH=/usr/local/lib
 ```
 
-気を取り直してビルドを実行します。
+libbpg-0.9.5 のディレクトリに戻り、ビルドを実行します。
 
 ```
-SDL/SDL_image.h: No such file or directory
+bpgenc.c:33:21: fatal error: jpeglib.h: そのようなファイルやディレクトリはありません
+ #include <jpeglib.h>
+                     ^
+compilation terminated.
 ```
 
+まずは libjpeg がインストールされていない場合、このエラーが出力されます。
+
+```
+$ sudo apt-get install libjpeg-dev
+```
+
+libjpeg-dev をインストールし、make を実行すると
+
+```
+bpgview.c:33:21: fatal error: SDL/SDL.h: そのようなファイルやディレクトリはありません
+ #include <SDL/SDL.h>
+                     ^
+compilation terminated.
+```
 これは何でしょう。Deb系パッケージ管理システムには、特定のファイルがどのパッケージ含まれているか調べる apt-file というツールがあります。これで調べてみます。インストールした後、最新の情報に更新する必要があります。
 
 ```
 $ sudo apt-get install apt-file
 $ sudo apt-file update
-$ apt-file search SDL_image.h
+$ apt-file search SDL/SDL.h
+emscripten: /usr/share/emscripten/system/include/SDL/SDL.h
+libsdl1.2-dev: /usr/include/SDL/SDL.h
+```
+
+どうも libsdl1.2-dev のようなのでこれをインストールします。
+
+ ```
+ $ sudo apt-get install libsdl1.2-dev 
+ ```
+
+make を続行します。
+
+```
+bpgview.c:34:27: fatal error: SDL/SDL_image.h: そのようなファイルやディレクトリはありません
+ #include <SDL/SDL_image.h>
+                           ^
+compilation terminated.
+```
+再び apt-file で調べます。
+
+```
+$ apt-file search SDL/SDL_image.h
 emscripten: /usr/share/emscripten/system/include/SDL/SDL_image.h
 libsdl-image1.2-dev: /usr/include/SDL/SDL_image.h
-libsdl2-image-dev: /usr/include/SDL2/SDL_image.h
+```
+
+libsdl-image1.2-dev が必要のようなのでインストールします。 
 
 ```
-libsdl-image1.2-dev と libsdl2-image-dev が必要のようなのでインストールします。 
-
-```
-$ sudo apt-get install libsdl-image1.2-dev libsdl2-image-dev
+$ sudo apt-get install libsdl-image1.2-dev
 ```
 これでビルドできるかと思います。
 
