@@ -4,9 +4,25 @@
 
 
 
-場所はこんなところです。
+8月29日、30日と舞鶴で合宿を行いました。場所はこんなところです。
 
 image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicc3Y0VG1GTDRxUUE[]
 
 民家を改造してあってシェアスペースとして利用できるようになっています。
+
+
+今回は DDD による開発を行っており、ユーザーストーリーマップによるドメイン分析を行いました。とりあえず思いつくままユーザー要件を並べたのがこちらになります。
+
+
+image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicVzlSMUZpMWx0bWM[]
+
+このホワイトーボードは100均で売っているものをテープで連結したものです。安く仕上がる上に持ち運びまでできるという優れものです。見つけたら買い占めましょう。
+
+
+その後、時系列に並べ、最低限必要な機能を上に並べていきます。そうするとこのようなシンプルな要求仕様がわかりますので第一スプリントとしてはこの実装を行っていきます。
+
+image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicVkh6elJkWHhaQlE[]
+
+1日目の進捗は、アイスブレイク、Slack の作成、リポジトリの作成、ユーザーストーリーマップの作成となりました。
+
 
