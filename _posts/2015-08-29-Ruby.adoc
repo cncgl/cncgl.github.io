@@ -6,4 +6,7 @@
 
 場所はこんなところです。
 
-https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicc3Y0VG1GTDRxUUE
+image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicc3Y0VG1GTDRxUUE[]
+
+民家を改造してあってシェアスペースとして利用できるようになっています。
+
