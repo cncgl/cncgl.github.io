@@ -1,4 +1,6 @@
 = Ruby舞鶴で合宿をしました
 
-tags: ruby
+:hp-tags: ruby
+
+
 
