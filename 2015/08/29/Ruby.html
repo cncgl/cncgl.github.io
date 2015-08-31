@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Ruby舞鶴で合宿をしました</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="//cncgl.github.io/themes/ichi/favicon.ico">
+
+    <script type="text/javascript" src="//cncgl.github.io/themes/ichi/assets/js/vendor/fastclick.js?v=1.0.0"></script>
+    <script type="text/javascript" src="//cncgl.github.io/themes/ichi/assets/js/vendor/modernizr.js?v=1.0.0"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="//cncgl.github.io/themes/ichi/assets/css/normalize.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//cncgl.github.io/themes/ichi/assets/css/foundation.min.css?v=1.0.0" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" type="text/css" href="//cncgl.github.io/themes/ichi/assets/css/outdatedBrowser.min.css?v=1.0.0">
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="//cncgl.github.io/themes/ichi/assets/fonts/foundation-icons/foundation-icons.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//cncgl.github.io/themes/ichi/assets/css/styles.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:300,700,400|Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" />
+
+    <link rel="canonical" href="https://cncgl.github.io/2015/08/29/Ruby.html" />
+    
+    <meta property="og:site_name" content="FORGET ME NOT" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Ruby舞鶴で合宿をしました" />
+    <meta property="og:description" content="8月29日、30日と舞鶴で、Shinosaka.rb, DDD.rb, Ruby舞鶴 合同で Ruby 合宿を行いました。舞鶴をご存じないかもしれませんが、京都府です。京都府の北側で海上自衛隊の本部があります。場所はこんなところです。やってきました舞鶴、といいたいところですが、地元なので電車で1駅なのです。 外見からはわかりづらいですが、民家を改造してあってレンタルスペースとして利用できるようになっています。 今回は DDD による開発を行っており、ユーザーストーリーマップによるドメイン分析を行いました。とりあえず思いつくままユーザー要件を並べたのがこ..." />
+    <meta property="og:url" content="https://cncgl.github.io/2015/08/29/Ruby.html" />
+    <meta property="article:published_time" content="2015-08-28T15:00:00.000Z" />
+    <meta property="article:modified_time" content="2015-08-31T09:38:42.780Z" />
+    <meta property="article:tag" content="ruby" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Ruby舞鶴で合宿をしました" />
+    <meta name="twitter:description" content="8月29日、30日と舞鶴で、Shinosaka.rb, DDD.rb, Ruby舞鶴 合同で Ruby 合宿を行いました。舞鶴をご存じないかもしれませんが、京都府です。京都府の北側で海上自衛隊の本部があります。場所はこんなところです。やってきました舞鶴、といいたいところですが、地元なので電車で1駅なのです。 外見からはわかりづらいですが、民家を改造してあってレンタルスペースとして利用できるようになっています。 今回は DDD による開発を行っており、ユーザーストーリーマップによるドメイン分析を行いました。とりあえず思いつくままユーザー要件を並べたのがこ..." />
+    <meta name="twitter:url" content="https://cncgl.github.io/2015/08/29/Ruby.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "FORGET ME NOT",
+    "author": {
+        "@type": "Person",
+        "name": "cncgl",
+        "image": "https://avatars.githubusercontent.com/u/13092383?v=3",
+        "url": "undefined/author/undefined",
+        "sameAs": "http://cncgl.github.io/"
+    },
+    "headline": "Ruby舞鶴で合宿をしました",
+    "url": "https://cncgl.github.io/2015/08/29/Ruby.html",
+    "datePublished": "2015-08-28T15:00:00.000Z",
+    "dateModified": "2015-08-31T09:38:42.780Z",
+    "keywords": "ruby",
+    "description": "8月29日、30日と舞鶴で、Shinosaka.rb, DDD.rb, Ruby舞鶴 合同で Ruby 合宿を行いました。舞鶴をご存じないかもしれませんが、京都府です。京都府の北側で海上自衛隊の本部があります。場所はこんなところです。やってきました舞鶴、といいたいところですが、地元なので電車で1駅なのです。 外見からはわかりづらいですが、民家を改造してあってレンタルスペースとして利用できるようになっています。 今回は DDD による開発を行っており、ユーザーストーリーマップによるドメイン分析を行いました。とりあえず思いつくままユーザー要件を並べたのがこ..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="FORGET ME NOT" href="https://cncgl.github.io/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+</head>
+<body class="post-template tag-ruby">
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdate" href="http://outdatedbrowser.com/">Update my browser now</a></p>
+</div>
+
+<nav class="top-bar hide-for-large-up" data-topbar >
+  <ul class="title-area">
+    <li class="name">
+
+    </li>
+    <li class="home"><a class="fi-home" href="https://cncgl.github.io"></a></li>
+    <li class="toggle-topbar"><a href="#" id="trigger-overlay" class="fi-list"></a></li>
+  </ul>
+
+<div class="overlay overlay-scale">
+    <button type="button" class="overlay-close">Close</button>
+    <nav>
+        <ul>
+            <li><a href="https://cncgl.github.io">Home</a></li>
+        </ul>
+    </nav>
+</div>
+
+</nav>
+
+<div class="row">
+
+<div class="small-16 medium-16 large-4 columns right head-area" >
+
+<header class="site-head">
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <ul class="side-nav blog-menu show-for-large-up">
+                <li><a class="fi-home" href="https://cncgl.github.io"></a></li>
+                <li><a class="fi-torso" href="https://cncgl.github.io/about"></a></li>
+                <li><a class="fi-mail" href="https://cncgl.github.io/contact"></a></li>
+            </ul>
+            <a class="blog-logo" href="https://cncgl.github.io"><img alt="FORGET ME NOT" src="/images/IMG_20130130_140211.jpg" alt="Blog Logo" /></a>
+            <h1 class="blog-title">FORGET ME NOT</h1>
+            <hr>
+            <p class="blog-description">備忘録</p>
+            <div class="blog-network">
+<!--                 <a href="#" class="fi-social-pinterest"></a>
+                <a href="#" class="fi-social-linkedin"></a>
+                <a href="#" class="fi-social-behance"></a>
+                <a href="#" class="fi-social-deviant-art"></a>
+                <a href="#" class="fi-social-dribbble"></a>
+                <a href="#" class="fi-social-flickr"></a>
+                <a href="#" class="fi-social-github"></a>
+                <a href="#" class="fi-social-skype"></a>
+                <a href="#" class="fi-social-snapchat"></a>
+                <a href="#" class="fi-social-steam"></a>
+                <a href="#" class="fi-social-xbox"></a>
+                <a href="#" class="fi-social-reddit"></a> -->
+                  <a href="https://github.com/cncgl" class="fi-social-github"></a>
+                  <a href="https://twitter.com/subcigel" class="fi-social-twitter"></a>
+                  <a href="https://www.facebook.com/shigeru.kondoh.9" class="fi-social-facebook"></a>
+            </div>
+        </div>
+    </div>
+</header>
+
+</div>
+
+
+<div class="small-16 medium-16 large-12 columns main-column left">
+    
+
+<main class="content" role="main">
+
+    <article class="post tag-ruby">
+
+
+            <h1 class="post-title">Ruby舞鶴で合宿をしました</h1>
+
+            <span class="post-meta label"><time datetime="2015-08-29">29 Aug 2015</time></span>
+
+            <section class="post-content">
+                <div class="paragraph">
+<p>8月29日、30日と舞鶴で、<strong>Shinosaka.rb</strong>, <strong>DDD.rb</strong>, <strong>Ruby舞鶴</strong> 合同で Ruby 合宿を行いました。舞鶴をご存じないかもしれませんが、<strong>京都府</strong>です。京都府の北側で海上自衛隊の本部があります。場所はこんなところです。やってきました舞鶴、といいたいところですが、地元なので電車で1駅なのです。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicc3Y0VG1GTDRxUUE" alt="uc?export=view&amp;id=0BxX1sdAOmTicc3Y0VG1GTDRxUUE">
+</div>
+</div>
+<div class="paragraph">
+<p>外見からはわかりづらいですが、民家を改造してあってレンタルスペースとして利用できるようになっています。</p>
+</div>
+<div class="paragraph">
+<p>今回は DDD による開発を行っており、ユーザーストーリーマップによるドメイン分析を行いました。とりあえず思いつくままユーザー要件を並べたのがこちらになります。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicVzlSMUZpMWx0bWM" alt="uc?export=view&amp;id=0BxX1sdAOmTicVzlSMUZpMWx0bWM">
+</div>
+</div>
+<div class="paragraph">
+<p>このホワイトーボードは100均で売っているものをテープで連結したものです。安く仕上がる上に持ち運びまでできるという優れものです。見つけたら買い占めましょう。ただし、耐久性はさほど高くないかもしれません。</p>
+</div>
+<div class="paragraph">
+<p>その後、時系列に並べ、最低限必要な機能を上に並べていきます。そうするとこのようなシンプルな要求仕様がわかりますので第一スプリントとしてはこの実装を行っていきます。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicVkh6elJkWHhaQlE" alt="uc?export=view&amp;id=0BxX1sdAOmTicVkh6elJkWHhaQlE">
+</div>
+</div>
+<div class="paragraph">
+<p>1日目の進捗は、アイスブレイク、Slack の作成、リポジトリの作成、ユーザーストーリーマップの作成となりました。</p>
+</div>
+<div class="paragraph">
+<p>なお、この後懇親会があり、天ぷらをいただいたのですが、スマホを忘れていったので写真はありません。てへぺろ。写真は1日目終了の様子。このユーザーストーリーマップのボードは作戦ボードと呼ばれていました。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://drive.google.com/uc?export=view&id=0BxX1sdAOmTiccVM4N3hvZy0yUTA" alt="uc?export=view&amp;id=0BxX1sdAOmTiccVM4N3hvZy0yUTA">
+</div>
+</div>
+<div class="paragraph">
+<p>2日目。</p>
+</div>
+<div class="paragraph">
+<p>概念モデルを作成し、更に論理モデルへと落とし込みます。このあたりは、分析・設計スキルが要求されるかと思います。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicWlJBZlhEcnczS3c" alt="uc?export=view&amp;id=0BxX1sdAOmTicWlJBZlhEcnczS3c">
+</div>
+</div>
+<div class="paragraph">
+<p>ここまでで午前が終了。お昼は、山盛りの海鮮丼をいただきました。海鮮を乗せた後の写真を載せるべきでした。味噌汁は当然あら汁です。いやあ、<strong>超おいしかった</strong>です。地元民なのでそんなに驚くなよと言われそうですが、地元民でもそんなにいいものばっかりは食べていないのです。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicRC1pdW5xNzdHRGs" alt="uc?export=view&amp;id=0BxX1sdAOmTicRC1pdW5xNzdHRGs">
+</div>
+</div>
+<div class="paragraph">
+<p>午後からは、タスクを分割し、論理モデルに従って実装していきます。今回合宿に参加したのは<strong>8名</strong>なので余裕で実装・・といったところなのですが、テーブルやフィールドのすり合わせから、コントローラーのすり合わせなど意外と時間がかかりました。いろいろあるのがこういった合宿の醍醐味でもありますが、段取り重要ですね。勉強になります。</p>
+</div>
+<div class="paragraph">
+<p>この開発は RSpec による TDD/BDD ですすめられており、CoverAlls による CI と Slack への通知を行いました。こういったインフラの構築も勉強になりましたし、先駆者の方々の知見を生で得られていい機会となりました。</p>
+</div>
+<div class="paragraph">
+<p>成果の出たところで KPT を報告し終了です。いやぁ、本当に楽しかった。<strong>Shinosaka.rb</strong> のみなさん、<strong>DDD.rb</strong> のみなさん、<strong>Ruby舞鶴</strong>のみなさんありがとうございました。また、今回お世話になった <a href="http://kokin.net/saikaan">宰嘉庵（さいかあん）</a> さんはリーズナブルな料金でお借りでき、宿泊は出来ないものの Wifi、冷蔵庫も完備されており飲食可能なのでなかなかない良スペースではないかと思いました。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicYnJrbXgyZ2NIZms" alt="uc?export=view&amp;id=0BxX1sdAOmTicYnJrbXgyZ2NIZms">
+</div>
+</div>
+<div class="paragraph">
+<p>いやぁ、またやりたい！それまで勉強するぞ～！</p>
+</div>
+                        <aside class="tags fi-pricetag-multiple">Posted on <a href="https://cncgl.github.io/tag/ruby">ruby</a></aside>
+            </section>
+            <hr>
+            <footer class="post-footer">
+
+                <section class="share">
+                    <h4>Liked this post ? Share it.</h4>
+                    <a class="fi-social-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://cncgl.github.io/2015/08/29/Ruby.html"
+                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    </a>
+                    <a class="fi-social-twitter" href="https://twitter.com/share?text=Ruby%E8%88%9E%E9%B6%B4%E3%81%A7%E5%90%88%E5%AE%BF%E3%82%92%E3%81%97%E3%81%BE%E3%81%97%E3%81%9F&amp;url=https://cncgl.github.io/2015/08/29/Ruby.html"
+                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    </a>
+                    <a class="fi-social-google-plus" href="https://plus.google.com/share?url=https://cncgl.github.io/2015/08/29/Ruby.html"
+                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    </a>
+                </section>
+
+                <section class="author">
+                    <header>
+                        <span>About the author</span>
+                    </header>
+                    <section>
+                        <h4>cncgl</h4>
+                        <img src="https://avatars.githubusercontent.com/u/13092383?v=3">
+                        <span>Japan</span>
+                        <a href="http://cncgl.github.io/">http://cncgl.github.io/</a>
+                    </section>
+                    <footer>
+                         <p></p>
+                    </footer>
+                </section>
+
+        <div class="clearfix"></div>
+                    <hr>
+
+            </footer>
+
+        <h3 class="title-disqus"><span class="fi-comments"></span>Discussions</h3>
+
+
+
+
+        <section class="post-comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+          var disqus_shortname = 'concigel'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </section>
+
+
+    </article>
+
+</main>
+
+</div>
+
+</div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+
+    <!--[if lte IE 8]>
+        <script type="text/javascript" src="//cncgl.github.io/themes/ichi/assets/js/outdatedBrowser.min.js?v=1.0.0"></script>
+    <![endif]-->
+    <script type="text/javascript" src="//cncgl.github.io/themes/ichi/assets/js/min/built.js?v=1.0.0"></script>
+
+    <script>
+      $(document).foundation();
+    </script>
+
+</body>
+</html>
