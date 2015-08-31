@@ -1,4 +1,4 @@
-= Ruby舞鶴で合宿をしました
+= 舞鶴で Ruby の合宿をしました
 
 :hp-tags: ruby
 
