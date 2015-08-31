@@ -26,3 +26,24 @@ image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicVkh6elJkWHhaQlE[]
 1日目の進捗は、アイスブレイク、Slack の作成、リポジトリの作成、ユーザーストーリーマップの作成となりました。
 
 
+なお、この後懇親会があり、天ぷらをいただいたのですが、スマホを忘れていったので写真はありません。てへぺろ。写真は1日目終了の様子。
+
+image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTiccVM4N3hvZy0yUTA[]
+
+2日目。
+
+概念モデルを作成し、更に論理モデルへと落とし込みます。このあたりは、分析・設計スキルが要求されるかと思います。
+
+
+image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicWlJBZlhEcnczS3c[]
+
+ここまでで午前が終了。お昼は、山盛りの海鮮丼をいただきました。
+
+image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicRC1pdW5xNzdHRGs[]
+
+タスクを分割し、論理モデルに従って実装していきます。今回合宿に参加したのは8名なので余裕で実装・・といったところなのですが、テーブルやフィールドのすり合わせから、コントローラーのすり合わせなど意外と時間がかかりました。いろいろあるのがこういった合宿の醍醐味でもありますが、段取り重要ですね。勉強になります。
+
+この開発は RSpec による TDD/BDD ですすめられており、CoverAlls による CI と Slack への通知を行いました。こういったインフラの構築も勉強になりましたし、先駆者の方々の知見を生で得られていい機会となりました。
+
+
+
