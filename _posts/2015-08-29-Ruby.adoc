@@ -46,6 +46,8 @@ image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicRC1pdW5xNzdHRGs[]
 この開発は RSpec による TDD/BDD ですすめられており、CoverAlls による CI と Slack への通知を行いました。こういったインフラの構築も勉強になりましたし、先駆者の方々の知見を生で得られていい機会となりました。
 
 
-成果の出たところで KPT を報告し終了です。いやぁ、本当に楽しかった。今回お世話になった http://kokin.net/saikaan[宰嘉庵（さいかあん）] さんはリーズナブルな料金でお借りでき、宿泊は出来ないものの Wifi、冷蔵庫も完備されており飲食可能なのでなかなかない良スペースではないかと思いました。
+成果の出たところで KPT を報告し終了です。いやぁ、本当に楽しかった。**Shinosaka.rb** のみなさん、**DDD.rb** のみなさん、**Ruby舞鶴**のみなさんありがとうございました。また、今回お世話になった http://kokin.net/saikaan[宰嘉庵（さいかあん）] さんはリーズナブルな料金でお借りでき、宿泊は出来ないものの Wifi、冷蔵庫も完備されており飲食可能なのでなかなかない良スペースではないかと思いました。
 
 image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicYnJrbXgyZ2NIZms[]
+
+いやあ、またやりたい！それまで勉強するぞ～！
