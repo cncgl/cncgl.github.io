@@ -1,0 +1,13 @@
+= Phoenix を VPS へインストールする
+
+:hp-tags: phoenix, elixir
+
+## Erlang, Elixir のインストール
+
+## PostgreSQL のインストール
+
+## node.js のインストール
+
+
+## サンプルアプリをインストールして確認
+
