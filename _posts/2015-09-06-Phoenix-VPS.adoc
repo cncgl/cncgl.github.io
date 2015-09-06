@@ -2,14 +2,50 @@
 
 :hp-tags: phoenix, elixir
 
+## はじめに
+
+CentOS 6.6 の載った VPS に Phoenix サーバーを稼働させたくて設定を行ったので、手順をメモしました。
+
 ## Erlang, Elixir のインストール
 
 ## PostgreSQL のインストール
 
+データベースは標準では MySQL が動いているのですが、Phoenix のデフォルトサーバーが PostgreSQL なのと、RDB としては PostgreSQL の方が優れていると思うので PostgreSQL をインストールしました。
+
+
 ## node.js のインストール
+
+node.js をインストールします。方法は省略します。
+
+
+## その他システム設定
+
+Locale が正しく設定されていないと警告が出るので設定します。CentOS6 におけるロケールの設定は /etc/sysconfig/i18n なのでこれを編集します（CentOS7では localectl を使用します）。詳しくは http://zero-config.com/centos/changelocale.html を参照ください。
+
+```
+# cat /etc/sysconfig/i18n
+LANG="ja_JP.UTF-8"
+SYSFONT="latarcyrheb-sun16"
+```
+これはルートの環境のようなのでログインユーザーは
+```
+export LANG="ja_JP.UTF-8"
+```
+のようにします。これを .profile, .bash_profile, zshrc などに記述しておくといいでしょう。
+
+
 
 
 ## サンプルアプリをインストールして確認
 
+phoenix のサンプルプログラムをインストールして確認します。
 
-
+```
+$ git clone https://github.com/cncgl/phoenix-sample.git
+$ cd phonix-sample
+$ mix deps.get
+$ mix ecto.create
+$ mix ecto.migrate
+$ npm i
+$ mix phoenix.server
+```
