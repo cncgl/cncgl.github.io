@@ -1,0 +1,40 @@
+= Phoenix アプリケーションを CentOS 6 へデプロイする
+
+:hp-tags: elixir, phoenix
+
+## はじめに
+
+Phoenix アプリケーションを 本運用サーバー(CentOS 6) へデプロイする方法の説明をします。まだ、ベストではないですし、今後も Phoenix 側にも変更があるかと思います。Phoenix 1.0.2, Elixir 1.0.5 現在での方法とご理解ください。
+
+## 実行用ユーザーを作成する。
+
+アプリ実行用のユーザーを phoenix にして作成します。パスワードも作成します。
+```
+$ sudo useradd -m phoenix
+$ sudo passwd phoenix
+```
+
+
+## Erlang, Elixir, node.js, PostgreSQL のインストール
+
+https://cncgl.github.io/2015/09/06/Phoenix-VPS.html[Phoenix を VPS へインストールする] を参考にインストールします。
+
+
+## Phoenix アプリを取得する
+
+ここでは、Phoenix-sample をgit より取得します。実行ディレクトリは、$HOME/git/phoenix-sample とします。
+
+```
+$ mkdir git
+$ cd git
+$ git clone https://github.com/cncgl/phoenix-sample.git
+$ cd phoenix-sample
+```
+
+## 依存ファイルの取得など
+
+Phoenix framework では、
+
+```
+$ MIX_EMV=prod mix 
+```
