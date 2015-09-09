@@ -62,10 +62,18 @@ config :hello_phoenix, HelloPhoenix.Repo,
 
 ## 依存ファイルの取得など
 
-Phoenix framework では、 http://www.phoenixframework.org/docs/advanced-deployment[Exrm(Elixir Release Manager)] によるリリースビルドを推奨しています。リリース作業には https://github.com/bitwalker/exrm[exrm] パッケージが必要です。phoenix-sample は修正されているのですが、それ以外には mix.exs を確認して、dependencies に exrm を追加してください。
+Phoenix framework では、 http://www.phoenixframework.org/docs/advanced-deployment[Exrm(Elixir Release Manager)] によるリリースビルドを推奨しています。リリース作業には https://github.com/bitwalker/exrm[exrm] パッケージが必要です。phoenix-sample は修正されているのですが、それ以外の場合には mix.exs を確認して、deps に exrm を追加してください。
 
 ```
-
+defp deps do
+    [{:phoenix, "~> 1.0,0"},
+     {:phoenix_ecto, "~> 1.1"},
+     {:postgrex, ">= 0.0.0"},
+     {:phoenix_html, "~> 2.1"},
+     {:phoenix_live_reload, "~> 1.0", only: :dev},
+     {:cowboy, "~> 1.0"},
+     {:exrm, "~> 0.15.3"}]　　　　　# 追記
+end
 ```
 
 
