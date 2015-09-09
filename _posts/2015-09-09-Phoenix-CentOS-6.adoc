@@ -33,13 +33,10 @@ $ cd phoenix-sample
 ## データベース接続の設定
 
 リリース版で使用する config/prod.secret.exs を設定する。git リポジトリでは保存しないので新規に作成します。
-ここで secret_key_base は適当に入力してもいいが、生成してくれるものをコピペすればよりランダムな文字列を生成されます。
+ここで secret_key_base は適当に入力してもいいですが、`` mix phoenix.gen.secret`` により生成してくれるものをコピペすればよりランダムな文字列を生成されます。
 
 ```
-$ mix phoenix.gen.secret
-```
-
-```
+$cat config/prod.secret.exs
 use Mix.Config
 
 # In this file, we keep production configuration that
@@ -65,13 +62,70 @@ config :hello_phoenix, HelloPhoenix.Repo,
 
 ## 依存ファイルの取得など
 
-Phoenix framework では、
+Phoenix framework では、 http://www.phoenixframework.org/docs/advanced-deployment[Exrm(Elixir Release Manager)] によるリリースビルドを推奨しています。リリース作業には https://github.com/bitwalker/exrm[exrm] パッケージが必要です。phoenix-sample は修正されているのですが、それ以外には mix.exs を確認して、dependencies に exrm を追加してください。
+
+```
+
+```
+
+
+
+
+brunch.js がインストールされていない場合は `` npm i -g brunch`` でインストールしてください。
 
 ```
 $ mix deps.get --only prod
-$ MIX_ENV=orid mix compile
+$ MIX_ENV=prod mix compile
 $ brunch build --production  # asset のビルド
 $ MIX_ENV=prod mix phoenix.digest
 $ MIX_ENV=prod mix ecto.migrate
 ```
+
+## デーモンで実行
+
+CentOS 6 の service にデーモンとして登録する。Upstart は CentOS6 のものが 0.6.5 と古く、ユーザーを切り替えて実行ができなかっため、保留としました。新しい Upstart のインストールが分かれば試してみたいです。公式では Ubuntu で実行するための http://www.phoenixframework.org/docs/advanced-deployment#section-setting-up-our-init-system[Upstart のスクリプト] が公開されています。
+
+```
+$ cat /etc/init.d/todo-phoenix
+#!/bin/sh
+#
+
+. /etc/rc.d/init.d/functions
+
+PROG_NAME=todo-phoenix
+USER=phoenix
+APP_ROOT=/home/phoenix/git/phoenix-sample
+MIX_ENV=prod
+START_CMD="rel/hello_phoenix/bin/hello_phoenix start -detached"
+STOP_CMD="rel/hello_phoenix/bin/hello_phoenix stop"
+
+export PATH=/usr/elixir/bin:/usr/local/bin:$PATH
+cd $APP_ROOT || exit 1
+
+case $1 in
+  start)
+    echo -n $"Starting $PROG_NAME: "
+    sudo -u phoenix $START_CMD
+    ;;
+  stop)
+    echo -n $"Shutting down $PROG_NAME: "
+    sudo -u phoenix $STOP_CMD
+    ;;
+  restart)
+    echo -n $"Restarting $PROG_NAME: "
+    sudo -u phoenix $STOP_CMD
+    sudo -u phoenix $START_CMD
+    ;;
+  *)
+    echo >&2 "Usage: $0 <start|stop|restart>"
+    exit 1
+    ;;
+esac
+exit $?
+```
+
+このスクリプトにより ``sudo service todo-phoenix start`` で起動し、``sudo service todo-phoenix stop`` で停止します。ここで注意するのは、起動時は ``hello_phoenix start -detached`` と -detached オプションを付けて起動することです。start だけだとデーモンで実行してもコンソールに出力しているらしく、負荷をかけるとメモリー不足となります。
+
+詳しくは http://qiita.com/maruware/items/7765837384795b1d9659[phoenixでmix releaseしたときにメモリが溢れるのを解決 - Qiita] を参考にしてください。
+
 
