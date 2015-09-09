@@ -6,6 +6,9 @@
 
 Phoenix アプリケーションを 本運用サーバー(CentOS 6) へデプロイする方法の説明をします。まだ、ベストではないですし、今後も Phoenix 側にも変更があるかと思います。Phoenix 1.0.2, Elixir 1.0.5 現在での方法とご理解ください。
 
+また、Cowboy で立ち上げるまでの解説で、本来なら Nginx なりにリバースプロキシで接続するのですが、煩雑になるので省略しています。
+
+
 ## 実行用ユーザーを作成する。
 
 アプリ実行用のユーザーを phoenix にして作成します。パスワードも作成します。
@@ -47,7 +50,9 @@ use Mix.Config
 # 
 #   mix phoenix.gen.secret
 config :hello_phoenix, HelloPhoenix.Endpoint,
-        secret_key_base: "CrL8/FvT9RhfgYlq0DnYDPBvB2NNswRiLLYIa1Dc1/rPUtLchuYupZ2ePDkvTV58"
+        http: [port: 4001],					# 実行ポート
+        url: [host: "mydomain.com"],        # 実行ホスト
+        secret_key_base: "CrL8/FvT9RhfgYlq0DnYsPBvB2NNswRiLLYIa1Dc1/rPUtLchuYupZ2ePDkvTV58"
 
 # Configure your database
 config :hello_phoenix, HelloPhoenix.Repo,
@@ -65,6 +70,10 @@ config :hello_phoenix, HelloPhoenix.Repo,
 Phoenix framework では、 http://www.phoenixframework.org/docs/advanced-deployment[Exrm(Elixir Release Manager)] によるリリースビルドを推奨しています。リリース作業には https://github.com/bitwalker/exrm[exrm] パッケージが必要です。phoenix-sample は修正されているのですが、それ以外の場合には mix.exs を確認して、deps に exrm を追加してください。
 
 ```
+$ cat mix.exs
+...
+(中略)
+...
 defp deps do
     [{:phoenix, "~> 1.0,0"},
      {:phoenix_ecto, "~> 1.1"},
