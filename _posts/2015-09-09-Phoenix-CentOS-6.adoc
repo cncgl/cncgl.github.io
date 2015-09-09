@@ -91,9 +91,9 @@ end
 brunch.js がインストールされていない場合は `` npm i -g brunch`` でインストールしてください。
 
 ```
-$ mix deps.get --only prod
-$ MIX_ENV=prod mix compile
-$ brunch build --production  # asset のビルド
+$ mix deps.get --only prod        # 依存ファイルの取得
+$ MIX_ENV=prod mix compile        # ex ファイルのコンパイル
+$ brunch b -P                     # asset のビルド
 $ MIX_ENV=prod mix phoenix.digest
 $ MIX_ENV=prod mix ecto.migrate
 $ MIX_ENV=prod mix release
