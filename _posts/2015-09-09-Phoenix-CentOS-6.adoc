@@ -89,7 +89,7 @@ $ MIX_ENV=prod mix phoenix.digest
 $ MIX_ENV=prod mix ecto.migrate
 $ MIX_ENV=prod mix release
 ```
-release は少し時間がかかります。終了すると rel/ 配下にリリース用ファイルが生成されます。
+release は少し時間がかかります。終了すると rel ディレクトリ配下にリリース用ファイルが生成されます。
 
 
 ## デーモンで実行
