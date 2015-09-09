@@ -95,7 +95,7 @@ $ mix deps.get --only prod        # 依存ファイルの取得
 $ MIX_ENV=prod mix compile        # ex ファイルのコンパイル
 $ brunch b -P                     # asset のビルド
 $ MIX_ENV=prod mix phoenix.digest
-$ MIX_ENV=prod mix ecto.migrate
+$ MIX_ENV=prod mix do ecto.create, ecto.migrate
 $ MIX_ENV=prod mix release
 ```
 release は少し時間がかかります。終了すると rel ディレクトリ配下にリリース用ファイルが生成されます。なお、release   をやり直す場合は ``mix release.clean`` を実行します。
