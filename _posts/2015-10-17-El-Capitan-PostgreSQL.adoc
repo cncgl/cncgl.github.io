@@ -11,7 +11,7 @@ Mac の El Capitan に PostgreSQL をインストールしたのですが、 Ubu
 == Homebrew でインストール
 PostgreSQL 8.x がインストールされている場合は、``brew uninstall postgres`` でアンインストールします。``/usr/local/var/postgres`` に書き込み権限があるかを確認し、ない場合は ``sudo chown -R `whoami` /usr/local/var/postgres`` でオーナー権限を取得します。
 
-[source,bash]
+[source,sh]
 ----
 $ brew install postgres
 Warning: You are using OS X 10.11.
