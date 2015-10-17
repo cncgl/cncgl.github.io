@@ -11,7 +11,8 @@ Mac の El Capitan に PostgreSQL をインストールしたのですが、 Ubu
 == Homebrew でインストール
 PostgreSQL 8.x がインストールされている場合は、``brew uninstall postgres`` でアンインストールします。``/usr/local/var/postgres`` に書き込み権限があるかを確認し、ない場合は ``sudo chown -R `whoami` /usr/local/var/postgres`` でオーナー権限を取得します。
 
-```
+[source,bash]
+----
 $ brew install postgres
 Warning: You are using OS X 10.11.
 We do not provide support for this pre-release version.
@@ -35,7 +36,7 @@ Or, if you don't want/need launchctl, you can just run:
   postgres -D /usr/local/var/postgres
 ==> Summary
 🍺  /usr/local/Cellar/postgresql/9.4.4: 3014 files, 40M
-```
+----
 
 
 == リポジトリの初期化
