@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>お問い合わせ</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 </head>
 <body>
     <div class="row">
@@ -21,8 +21,9 @@
                 </div>
                 <div class="form-group">
                     <label>メッセージ</label>
-                    <textarea id="msg" rows="5" cols="20" class="form-control"></textarea>
+                    <textarea id="msg" rows="5" cols="20" name="message" class="form-control"></textarea>
                 </div>
+                <input type="hidden" name="_next" value="//contact/thanks.html" />
                 <input id="submit" type="submit" class="btn btn-info m-t" value="送る"></input>
             </form>
         </div>
