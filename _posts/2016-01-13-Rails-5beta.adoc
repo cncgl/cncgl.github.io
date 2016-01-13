@@ -1,3 +1,15 @@
 = Rails 5(beta) を使ってみた
 
-:gh-tags: Ruby, Rails
+:hp-tags: Ruby, Rails
+
+私は思うのですが、Rails の入門書って
+```
+$ gem install rails
+```
+で Rails インストールするように勧めますよね。しかし、後々わかるのですが、複数の Rails バージョンを扱いたいときに困ることになります。この gem install によりグローバルに rubygems をインストールすることになりますが、そうでないプロジェクト毎ローカルに Rails をインストールしようと思います。
+
+## Ruby のインストール
+
+Rails 5 は Ruby のバージョンに 2.2.2 (最後の .2 重要)以上が要求されます。ここでは 2.3.0-preview1 を使用することにします。当然、2.3.0 をメインで使い続けるわけにはいかないので、複数バージョンをインストールすることにします。
+
+Ruby のバージョン管理ツールには https://github.com/rbenv/rbenv[rbenv] と http://rvm.io/[rvm] があるのですが、ruby 以外にも node.js, python, Java, golang のバージョン仮までできる anyenv というのがあるのでそれをインストールします。
