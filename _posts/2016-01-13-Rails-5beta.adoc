@@ -1,15 +1,107 @@
-= Rails 5(beta) を使ってみた
+= Rails 5(beta) を使ってみた（前編）
 
 :hp-tags: Ruby, Rails
+
+## はじめに
 
 私は思うのですが、Rails の入門書って
 ```
 $ gem install rails
 ```
-で Rails インストールするように勧めますよね。しかし、後々わかるのですが、複数の Rails バージョンを扱いたいときに困ることになります。この gem install によりグローバルに rubygems をインストールすることになりますが、そうでないプロジェクト毎ローカルに Rails をインストールしようと思います。
+で Rails インストールするように勧めますよね。 http://railsguides.jp/getting_started.html[RailsGuide] もこの方法です。しかし、後々わかるのですが、この方法だとグローバルに Rails をインストールしてしまい、複数の Rails バージョンを扱いたいときに依存ライブラリで衝突が起こり、困ることになります。個人でやってる場合はまだなんとかなってもチームで開発して git リポジトリを共有する場合、それぞれグローバルにインストールされているライブラリが違っていたりして、開発環境がそろわず、無駄に時間を費やすこともあるかと思います。
+
+それを避けるため、ここでは、プロジェクト毎ローカルに Rails をインストールしようと思います。
 
 ## Ruby のインストール
 
-Rails 5 は Ruby のバージョンに 2.2.2 (最後の .2 重要)以上が要求されます。ここでは 2.3.0-preview1 を使用することにします。当然、2.3.0 をメインで使い続けるわけにはいかないので、複数バージョンをインストールすることにします。
+Rails 5 は Ruby のバージョンに 2.2.2 (最後の .2 重要)以上が要求されます。ここでは 2.3.0 を使用することにします。現行プロジェクトや保守プロジェクトなどで、2.3.0 だけというわけにはいかないので、複数バージョンをインストールすることにします。
 
-Ruby のバージョン管理ツールには https://github.com/rbenv/rbenv[rbenv] と http://rvm.io/[rvm] があるのですが、ruby 以外にも node.js, python, Java, golang のバージョン仮までできる anyenv というのがあるのでそれをインストールします。
+Ruby のバージョン管理ツールには https://github.com/rbenv/rbenv[rbenv] と http://rvm.io/[rvm] があるのですが、ruby 以外にも node.js, python, Java, golang のバージョン仮までできる https://github.com/riywo/anyenv[anyenv] というのがあるのでそれをインストールします。
+
+もし、既にインストールしてある ruby があるならアンインストールしておきます。anyenv では自分のホームディレクトリ配下にインストールされます。従って、RubyGems をインストールするときにたとえネイティブライブラリであっても sudo する必要がありません。
+
+```
+$ git clone https://github.com/riywo/anyenv ~/.anyenv
+$ echo 'export PATH="$HOME/.anyenv/bin:$PATH"' >> ~/.your_profile
+$ echo 'eval "$(anyenv init -)"' >> ~/.your_profile
+$ exec $SHELL -l
+```
+
+``.your_profile`` の部分はshell に応じて、``.profile``, ``.bash_profile``, ``.zshrc`` などに適宜置き換えてください。
+
+
+```
+$ anyenv install rbenv
+$ rbenv install -l
+... (前略)
+ 2.2.0
+ 2.2.1
+ 2.2.2
+ 2.2.3
+ 2.2.4
+ 2.3.0-dev
+ 2.3.0-preview1
+ 2.3.0-preview2
+ 2.3.0
+ 2.4.0-dev
+... (後略)
+$ rbenv install 2.3.0
+
+```
+
+## プロジェクトの作成
+
+プロジェクトのディレクトリを作成します。
+
+```
+$ mkdir rails_hello
+$ cd $_
+$ rbenv local 2.3.0
+$ gem install bundler
+$ bundler init
+```
+
+``gem install`` するのは、bundler だけです。その他の RubyGems はプロジェクトローカルにインストールします。
+
+``bundler init`` で Gemfile が生成されるので編集します。その前に、Rails の最新プレリリースバージョンを確認します。
+
+```
+$ gem search -ar --prerelease ^rails$
+*** REMOTE GEMS ***
+
+rails (5.0.0.beta1, 4.2.5, 4.2.5.rc2, 4.2.5.rc1, 4.2.4, 4.2.4.rc1, 4.2.3, 4.2.3.rc1, 4.2.2, 4.2.1, 4.2.1.rc4, 4.2.1.rc3, 4.2.1.rc2, 4.2.1.rc1, 4.2.0, 4.2.0.rc3, 4.2.0.rc2, 4.2.0.rc1, 4.2.0.beta4, 4.2.0.beta3, 4.2.0.beta2, 4.2.0.beta1, 4.1.14, 4.1.14.rc2, 4.1.14.rc1, 4.1.13, 4.1.13.rc1, 4.1.12, 4.1.12.rc1, 4.1.11, 4.1.10, 4.1.10.rc4, 4.1.10.rc3, 4.1.10.rc2, 4.1.10.rc1, 4.1.9, 4.1.9.rc1, 4.1.8, 4.1.7.1, 4.1.7, 4.1.6, 4.1.6.rc2, 4.1.6.rc1, 4.1.5, 4.1.4, 4.1.3, 4.1.2, 4.1.2.rc3, 4.1.2.rc2, 4.1.2.rc1, 4.1.1, 4.1.0, 4.1.0.rc2, 4.1.0.rc1, 4.1.0.beta2, 4.1.0.beta1, 4.0.13, 4.0.13.rc1, 4.0.12, 4.0.11.1, 4.0.11, 4.0.10, 4.0.10.rc2, 4.0.10.rc1, 4.0.9, 4.0.8, 4.0.7, 4.0.6, 4.0.6.rc3, 4.0.6.rc2, 4.0.6.rc1, 4.0.5, 4.0.4, 4.0.4.rc1, 4.0.3, 4.0.2, 4.0.1, 4.0.1.rc4, 4.0.1.rc3, 4.0.1.rc2, 4.0.1.rc1, 4.0.0, 
+... (後略)
+```
+ここでオプション ``-a`` は全てバージョンを表示、``-r`` はリモートのGemファイル、``--prerelease`` は開発バージョンを表します。Rails 5 の最新版は 5.0.0.beta1 であることがわかりました。
+
+```
+$ vim Gemfile
+# A sample Gemfile
+source "https://rubygems.org"
+
+gem "rails", "5.0.0.beta1"  # <= change here
+
+```
+インストールします
+
+```
+$ bundle install --path vendor/bundle
+```
+
+``--path vendor/bundle`` オプションを付与することでローカルディレクトリに RubyGems がインストールされます。一度実行すると、``.bundle/config``ファイルに保存されるので以後は必要ありません。
+
+Rails のプロジェクトを生成します。vendor/bundle にある Rails を呼び出すには ``bundle exec`` を使います。
+
+```
+$ bundle exec rails _5.0.0.beta1_ new . --skip-spring --api
+```
+
+``\_5.0.0.beta1_`` というのは、グローバルに複数の Rails がインストールしてある場合にどれを使うかの指定に使われるもので、この方式では必要ないかもしれませんが、念のために付与してあります。
+
+``--sklp-spring`` は 5.0.0.beta1 においては spring がうまく動作していないため関連ファイルを生成しないようにしてあります。
+
+``--api`` は Rails 5 で追加されたAPI で、APIサービスに特化したひな形を生成します。ビューはありませんし、コントローラーは JSON を返すようになります。``new`` や ``edit`` といったビューに依存したルーティングもなくなっています。
+
+``bundle install`` で生成した、Gemfile を編集して ``rails new`` で上書きしてしまうのが、いまひとついけてない感じがありますが、グローバルに rails をインストールした場合は、グローバルとローカルの２か所に rails をインストールしてしまう形になるので、それよりはましかと思います。
+
+ちょっと丁寧に書きすぎて時間がかかったので、また後日続きを書こうと思います。
