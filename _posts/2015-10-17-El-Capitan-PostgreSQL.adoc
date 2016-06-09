@@ -1,0 +1,128 @@
+= El Capitan に PostgreSQL をインストールする
+
+:hp-tags: PostgreSQL, OSX
+
+== はじめに
+Mac の El Capitan に PostgreSQL をインストールしたのですが、 Ubuntu と違い、デーモンの登録まで自動ではやってくれないので、戸惑ったためメモしました。
+
+また、自分は /usr/local をすでに作っていたのですが、作ってない場合は、少し面倒になりますので、　https://github.com/Homebrew/homebrew/blob/master/share/doc/homebrew/El_Capitan_and_Homebrew.md[Homebrew のドキュメント] を参考にしてください。
+
+
+== Homebrew でインストール
+PostgreSQL 8.x がインストールされている場合は、``brew uninstall postgres`` でアンインストールします。``/usr/local/var/postgres`` に書き込み権限があるかを確認し、ない場合は ``sudo chown -R `whoami` /usr/local/var/postgres`` でオーナー権限を取得します。
+
+[source,sh]
+----
+$ brew install postgres
+Warning: You are using OS X 10.11.
+We do not provide support for this pre-release version.
+You may encounter build failures or other breakage.
+==> Downloading https://homebrew.bintray.com/bottles/postgresql-9.4.4.el_capitan
+Already downloaded: /Library/Caches/Homebrew/postgresql-9.4.4.el_capitan.bottle.tar.gz
+==> Pouring postgresql-9.4.4.el_capitan.bottle.tar.gz
+==> Caveats
+If builds of PostgreSQL 9 are failing and you have version 8.x installed,
+you may need to remove the previous version first. See:
+  https://github.com/Homebrew/homebrew/issues/2510
+
+To migrate existing data from a previous major version (pre-9.4) of PostgreSQL, see:
+  https://www.postgresql.org/docs/9.4/static/upgrading.html
+
+To have launchd start postgresql at login:
+  ln -sfv /usr/local/opt/postgresql/*.plist ~/Library/LaunchAgents
+Then to load postgresql now:
+  launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+Or, if you don't want/need launchctl, you can just run:
+  postgres -D /usr/local/var/postgres
+==> Summary
+🍺  /usr/local/Cellar/postgresql/9.4.4: 3014 files, 40M
+----
+
+
+== リポジトリの初期化
+```
+$ initdb -D /usr/local/var/postgres
+The files belonging to this database system will be owned by user <USERNAME>.
+This user must also own the server process.
+
+The database cluster will be initialized with locale "ja_JP.UTF-8".
+The default database encoding has accordingly been set to "UTF8".
+initdb: could not find suitable text search configuration for locale "ja_JP.UTF-8"
+The default text search configuration will be set to "simple".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory /usr/local/var/postgres ... ok
+creating subdirectories ... ok
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+selecting dynamic shared memory implementation ... posix
+creating configuration files ... ok
+creating template1 database in /usr/local/var/postgres/base/1 ... ok
+initializing pg_authid ... ok
+initializing dependencies ... ok
+creating system views ... ok
+loading system objects' descriptions ... ok
+creating collations ... ok
+creating conversions ... ok
+creating dictionaries ... ok
+setting privileges on built-in objects ... ok
+creating information schema ... ok
+loading PL/pgSQL server-side language ... ok
+vacuuming database template1 ... ok
+copying template1 to template0 ... ok
+copying template1 to postgres ... ok
+syncing data to disk ... ok
+
+WARNING: enabling "trust" authentication for local connections
+You can change this by editing pg_hba.conf or using the option -A, or
+--auth-local and --auth-host, the next time you run initdb.
+
+Success. You can now start the database server using:
+
+    postgres -D /usr/local/var/postgres/
+or
+    pg_ctl -D /usr/local/var/postgres/ -l logfile start
+```
+
+== ユーザー作成
+ここでは postgres というユーザーを作成します。
+```
+$ createuser -P postgres
+Enter password for new role:
+Enter it again:
+```
+
+== データベース作成
+ここでは sample_dev というデータベースを postgres をオーナーとして作成します。
+```
+$ createdb sample_dev -O postgres
+```
+
+== 起動
+一時的に使用するなら、コマンドラインから起動します。CTRL+C で停止します。
+```
+$ postgres -D /usr/local/var/postgres/
+```
+
+デーモンに登録する場合は、launchd を使用します。
+```
+$ ln -s /usr/local/Cellar/postgresql/9.4.4/homebrew.mxcl.postgresql.plist  ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+$ launchctl load ~/Library/LaunchAgents/homebrew.mxcl.postgresql.plist
+```
+
+== 確認
+```
+$ psql -l
+                                 List of databases
+    Name    |  Owner   | Encoding |   Collate   |    Ctype    |  Access privileges
+------------+----------+----------+-------------+-------------+---------------------
+ postgres   | <USERNAME>  | UTF8     | ja_JP.UTF-8 | ja_JP.UTF-8 |
+ sample_dev | postgres | UTF8     | ja_JP.UTF-8 | ja_JP.UTF-8 |
+ template0  | <USERNAME>  | UTF8     | ja_JP.UTF-8 | ja_JP.UTF-8 | =c/<USERNAME>         +
+            |          |          |             |             | <USERNAME>=CTc/<USERNAME>
+ template1  | <USERNAME>  | UTF8     | ja_JP.UTF-8 | ja_JP.UTF-8 | =c/<USERNAME>         +
+            |          |          |             |             | <USERNAME>=CTc/<USERNAME>
+(4 rows)
+```
+

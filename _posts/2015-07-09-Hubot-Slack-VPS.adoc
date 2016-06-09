@@ -1,0 +1,190 @@
+= Hubot-Slack を VPS へインストール
+
+:hp-tags: hubot, slack
+
+## はじめに
+
+hubotを VPS にインストールする手順です。同様のエントリーは多いのですが、記事が古くてうまく動作しない例が多いので改めて書いてみました。heroku は料金体系が変わり、無料だと連続運用できなくなったため、安いVPS で運用しようと考える方も多いかと思いますので、そういった方々の参考になればと思います。
+
+インストールする VPS の OS として CentOS 6.6 で確認しました。他の OSの場合は適宜読み替えてください。
+
+## Node.js, npm  のインストール
+
+Node.js とそのパッケージマネージャーである npm が必要です。Node.js のバージョン管理システムである nvm もインストールします。
+
+現時点で最新である io.js v2.3.3 をインストールします。v2.3.2 にはセキュリティーホールが見つかっているので v2.3.3 以上をインストールしてください。
+
+```
+$ git clone https://github.com/creationix/nvm.git ~/.nvm
+$ source ~/.nvm/nvm.sh
+$ nvm ls-remote
+$ nvm install iojs
+```
+
+ログイン時に有効にするためには、~/.bashrc, ~/.profile, ~/.zshrc に使用しているシェルに応じて追記します。
+
+```
+source ~/.nvm/nvm.sh
+nvm default iojs-v2.3.3
+```
+npm は node.js をインストールしたときにインストールされます。npm を使って npm自信をアップデートできます。執筆時の最新バージョンは 2.12.1 ですが、ベータ版の 3.1.0
+が利用できます。
+
+```
+$ npm i -g npm@3
+$ npm -v
+3.1.0
+```
+
+## hubot のインストール
+
+hubot をインストールします。hubot は coffee で書かれているため coffee-script もインストールします。
+
+```
+$ npm i -g hubot coffee-script
+```
+
+## redis のインストール
+
+hubot はデータの永続化に redis を使用するので redis をインストールします。CentOS の場合 EPEL リポジトリが必要です。
+
+```
+$ sudo rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+$ sudo yum install -y redis
+$ sudo chkconfig redis on
+$ sudo service redis start
+```
+
+## hubot のひな形作成
+
+hubot のひな形を作成します。昔のバージョンでは hubot -c <botname> で作成しましたが、今は非推奨となり yoeman による生成が推奨されています。
+
+```
+$ npm i -g yo generator-hubot
+$ mkdir hubot1 && cd $_
+$ yo hubot
+```
+
+いろいろ聞かれますので、adapter は slack にします。bot 名は condroid として以後説明します。
+
+image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicMkhsYk9vUGtHRGs[]
+
+## 動作確認
+
+### shell で確認
+
+きちんとインストールされたか確認します。bin/hubot を bin/hubot.sh にリネームします。これは後に pm2 でデーモン化するときに必要になります。今回 heroku は使いませんので、heroku の外部スクリプトを削除します。
+
+```
+$ mv bin/hubot bin/hubot.sh
+```
+external-scripts.json
+```
+[
+  "hubot-diagnostics",
+  "hubot-help",
+  "hubot-heroku-keepalive",  # この行を削除
+  "hubot-google-images",
+  "hubot-google-translate",
+  "hubot-pugme",
+  "hubot-maps",
+  "hubot-redis-brain",
+  "hubot-rules",
+  "hubot-shipit"
+]
+```
+
+package.json
+```
+{
+  "name": "condroid",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Shigeru Kondou <concigel@gmail.com>",
+  "description": "A simple helpful robot for your Company",
+  "dependencies": {
+    "hubot": "^2.13.2",
+    "hubot-diagnostics": "0.0.1",
+    "hubot-google-images": "^0.1.5",
+    "hubot-google-translate": "^0.2.0",
+    "hubot-help": "^0.1.1",
+    "hubot-heroku-keepalive": "0.0.4",   # この行を削除
+    "hubot-maps": "0.0.2",
+    "hubot-pugme": "^0.1.0",
+    "hubot-redis-brain": "0.0.3",
+    "hubot-rules": "^0.1.1",
+    "hubot-scripts": "^2.16.1",
+    "hubot-shipit": "^0.2.0",
+    "hubot-slack": "^3.3.0"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}    
+```
+shell アダプターを使用して確認します。<bot name> help でこの bot の持っているコマンドが表示されますのでいろいろ試してください。ここでは ping コマンドで確認しています。
+
+```
+$ bin/hubot.sh -a shell
+condroid > condroid ping
+PONG
+
+```
+CTRL+C で終了します。
+
+
+### Slack で確認
+
+Slack のIntegration 設定にて Hubot Integration を追加します。名前は先ほどの bot名にします。
+
+追加すれば、Configured Integrations タブに Hubot がありますので、先ほど追加した設定を選択します。
+
+API Token にアクセストークンがあるのでコピーします。
+
+bin/hubot.sh を開き、環境変数 HUBOT_SLACK_TOKEN を設定します。
+
+bin/hubot.sh
+```
+#!/bin/sh
+
+set -e
+
+npm install
+export PATH="node_modules/.bin:node_modules/hubot/node_modules/.bin:$PATH"
+export HUBOT_SLACK_TOKEN=<API TOKEN>    # この行を追加する。先程の API TOKEN を貼り付ける
+
+exec node_modules/.bin/hubot --adapter slack --name "condroid" "$@"
+```
+
+bin/hubot.sh を実行し、Slack で確認します。
+
+
+image::https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicV1dGck1WR2lYNVU[]
+
+bot名 <コマンド名> という書き方ができなくなっていて、@<bot名> <コマンド名> とするか、bot にダイレクトメッセージで直接コマンドを叩きます。bot はデフォルトでは #general にしか所属していませんが /invite @<bot 名> で他のチャンネルにも招待できます。
+
+
+## デーモン化
+
+このままだとログインシェルを抜けると Bot も終了しますのでデーモン化します。デーモン化には pm2 を使用します。
+
+```
+$ npm i -g pm2
+$ pm2 start bin/hubot.sh
+```
+pm2 list で一覧が表示され、pm2 でヘルプが表示されますので、参考にしてください。
+
+ではよい hubot ライフを。
+
+
+## 参考
+npm - https://github.com/npm/npm
+
+pm2 - https://github.com/Unitech/pm2
+
+GitHub製フレームワークHubotの概要とインストール、チャットアプリと連携する基本的な使い方 - http://www.atmarkit.co.jp/ait/articles/1408/20/news035.html
+
+Docker + Yeoman + Hubot + Slack で簡単bot作成 - http://blog.fenneclab.com/docker-yeoman-hubot-slack/
+
+
+

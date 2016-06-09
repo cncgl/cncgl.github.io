@@ -1,0 +1,139 @@
+= Ubuntu 14.04 で BPG をビルドする
+
+:hp-tags: BPG, ubuntu
+
+
+## はじめに
+
+BPG(Better Portable Grpahics) は品質の損失なく、ファイルサイズを減らすための画像フォーマットです。以下のブログに検証されているものが詳しいです。
+
+
+http://blog.livedoor.jp/blackwingcat/archives/1885528.html[GigazineさんのBPG紹介記事が変なので、技術的に検証してみた所…なんと！]
+
+以下は ubuntu 14.04 においてビルド方法のメモです。
+
+
+## ダウンロード
+
+http://bellard.org/bpg/[公式サイト]よりダウンロードします。執筆時の最新版は 0.9.5でした。
+
+```
+$ wget http://bellard.org/bpg/libbpg-0.9.5.tar.gz
+$ tar zxvf libbpg-0.9.5.tar.gz
+```
+
+
+## ビルド
+
+g{plus}{plus} を使用することになるので g{plus}{plus} をインストールしておきます
+
+```
+$ sudo apt-get install g++
+```
+
+make を実行します。
+
+```
+$ cd libbpg-0.9.5
+$ make
+```
+
+```
+bpgdec.c:35:17: fatal error: png.h: そのようなファイルやディレクトリはありません
+ #include <png.h>
+                 ^
+compilation terminated.
+
+```
+しかし、このようなエラーメッセージが出ます。ubuntu にインストールされている libpng は 1.2.49  (/usr/include/libpng12 参照) だからで、png_set_longjmp_fn が追加されたのは libpng-1.4.x からだそうです。そのため http://www.libpng.org/pub/png/libpng.html[libpng] の最新版を取得します。執筆時の最新版は 1.6.18 でした。
+
+```
+$ wget http://prdownloads.sourceforge.net/libpng/libpng-1.6.18.tar.gz
+$ tar zxvf libpng-1.6.18.tar.gz
+$ cd libpng-1.6.18
+$ ./configure
+$ make
+$ sudo make install
+```
+configure で zlib not found とエラーが出るならば、zlib1g-dev をインストールする必要があります。
+
+```
+$ sudo apt-get install zlib1g-dev
+```
+インストールされるとヘッダとライブラリは /usr/local/include , /usr/local/lib にそれぞれインストールされます。コンパイラが参照できるよう環境変数を設定します。
+
+```
+export CPLUS_INCLUDE_PATH=/usr/local/include
+export LD_LIBRARY_PATH=/usr/local/lib
+export LIBRARY_PATH=/usr/local/lib
+```
+
+libbpg-0.9.5 のディレクトリに戻り、ビルドを実行します。
+
+```
+bpgenc.c:33:21: fatal error: jpeglib.h: そのようなファイルやディレクトリはありません
+ #include <jpeglib.h>
+                     ^
+compilation terminated.
+```
+
+まずは libjpeg がインストールされていない場合、このエラーが出力されます。
+
+```
+$ sudo apt-get install libjpeg-dev
+```
+
+libjpeg-dev をインストールし、make を実行すると
+
+```
+bpgview.c:33:21: fatal error: SDL/SDL.h: そのようなファイルやディレクトリはありません
+ #include <SDL/SDL.h>
+                     ^
+compilation terminated.
+```
+これは何でしょう。Deb系パッケージ管理システムには、特定のファイルがどのパッケージ含まれているか調べる apt-file というツールがあります。これで調べてみます。インストールした後、最新の情報に更新する必要があります。
+
+```
+$ sudo apt-get install apt-file
+$ sudo apt-file update
+$ apt-file search SDL/SDL.h
+emscripten: /usr/share/emscripten/system/include/SDL/SDL.h
+libsdl1.2-dev: /usr/include/SDL/SDL.h
+```
+
+どうも libsdl1.2-dev のようなのでこれをインストールします。
+
+ ```
+ $ sudo apt-get install libsdl1.2-dev 
+ ```
+
+make を続行します。
+
+```
+bpgview.c:34:27: fatal error: SDL/SDL_image.h: そのようなファイルやディレクトリはありません
+ #include <SDL/SDL_image.h>
+                           ^
+compilation terminated.
+```
+再び apt-file で調べます。
+
+```
+$ apt-file search SDL/SDL_image.h
+emscripten: /usr/share/emscripten/system/include/SDL/SDL_image.h
+libsdl-image1.2-dev: /usr/include/SDL/SDL_image.h
+```
+
+libsdl-image1.2-dev が必要のようなのでインストールします。 
+
+```
+$ sudo apt-get install libsdl-image1.2-dev
+```
+
+これでビルドできるかと思います。
+
+```
+$ make
+$ sudo make install
+```
+
+

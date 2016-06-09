@@ -1,0 +1,151 @@
+= Phoenix アプリケーションを CentOS 6 へデプロイする
+
+:hp-tags: elixir, phoenix
+
+## はじめに
+
+Phoenix アプリケーションを 本運用サーバー(CentOS 6) へデプロイする方法の説明をします。まだ、ベストではないですし、今後も Phoenix 側にも変更があるかと思います。Phoenix 1.0.2, Elixir 1.0.5 現在での方法とご理解ください。
+
+また、Cowboy で立ち上げるまでの解説で、本来なら Nginx なりにリバースプロキシで接続するのですが、煩雑になるので省略しています。
+
+
+## 実行用ユーザーを作成する。
+
+アプリ実行用のユーザーを phoenix にして作成します。パスワードも作成します。
+```
+$ sudo useradd -m phoenix
+$ sudo passwd phoenix
+```
+
+
+## Erlang, Elixir, node.js, PostgreSQL のインストール
+
+https://cncgl.github.io/2015/09/06/Phoenix-VPS.html[Phoenix を VPS へインストールする] を参考にインストールします。
+
+
+## Phoenix アプリを取得する
+
+ここでは、Phoenix-sample をgit より取得します。実行ディレクトリは、$HOME/git/phoenix-sample とします。
+
+```
+$ mkdir git
+$ cd git
+$ git clone https://github.com/cncgl/phoenix-sample.git
+$ cd phoenix-sample
+```
+## データベース接続の設定
+
+リリース版で使用する config/prod.secret.exs を設定する。git リポジトリでは保存しないので新規に作成します。
+ここで secret_key_base は適当に入力してもいいですが、`` mix phoenix.gen.secret`` により生成してくれるものをコピペすればよりランダムな文字列を生成されます。
+
+```
+$cat config/prod.secret.exs
+use Mix.Config
+
+# In this file, we keep production configuration that
+# you likely want to automate and keep it away from
+# your version contorl system.
+
+# You can generate a new secret by running:
+# 
+#   mix phoenix.gen.secret
+config :hello_phoenix, HelloPhoenix.Endpoint,
+        http: [port: 4001],					# 実行ポート
+        url: [host: "mydomain.com"],        # 実行ホスト
+        secret_key_base: "CrL8/FvT9RhfgYlq0DnYsPBvB2NNswRiLLYIa1Dc1/rPUtLchuYupZ2ePDkvTV58"
+
+# Configure your database
+config :hello_phoenix, HelloPhoenix.Repo,
+        adapter: Ecto.Adapters.Postgres,
+        username: "postgres",
+        password: "postgres",
+        database: "hello_phoenix_prod",
+        pool_size: 20
+
+```
+
+
+## 依存ファイルの取得など
+
+Phoenix framework では、 http://www.phoenixframework.org/docs/advanced-deployment[Exrm(Elixir Release Manager)] によるリリースビルドを推奨しています。リリース作業には https://github.com/bitwalker/exrm[exrm] パッケージが必要です。phoenix-sample は修正されているのですが、それ以外の場合には mix.exs を確認して、deps に exrm を追加してください。
+
+```
+$ cat mix.exs
+...
+(中略)
+...
+defp deps do
+    [{:phoenix, "~> 1.0,0"},
+     {:phoenix_ecto, "~> 1.1"},
+     {:postgrex, ">= 0.0.0"},
+     {:phoenix_html, "~> 2.1"},
+     {:phoenix_live_reload, "~> 1.0", only: :dev},
+     {:cowboy, "~> 1.0"},
+     {:exrm, "~> 0.15.3"}]　　　　　# 追記
+end
+```
+
+
+
+
+brunch.js がインストールされていない場合は `` npm i -g brunch`` でインストールしてください。
+
+```
+$ mix deps.get --only prod        # 依存ファイルの取得
+$ MIX_ENV=prod mix compile        # ex ファイルのコンパイル
+$ brunch b -P                     # asset のビルド
+$ MIX_ENV=prod mix phoenix.digest
+$ MIX_ENV=prod mix do ecto.create, ecto.migrate
+$ MIX_ENV=prod mix release
+```
+release は少し時間がかかります。終了すると rel ディレクトリ配下にリリース用ファイルが生成されます。なお、release   をやり直す場合は ``mix release.clean`` を実行します。
+
+
+## デーモンで実行
+
+CentOS 6 の service にデーモンとして登録する。Upstart は CentOS6 のものが 0.6.5 と古く、ユーザーを切り替えて実行ができなかっため、保留としました。新しい Upstart のインストールが分かれば試してみたいです。公式では Ubuntu で実行するための http://www.phoenixframework.org/docs/advanced-deployment#section-setting-up-our-init-system[Upstart のスクリプト] が公開されています。
+
+```
+$ cat /etc/init.d/todo-phoenix
+#!/bin/sh
+#
+
+. /etc/rc.d/init.d/functions
+
+PROG_NAME=todo-phoenix
+USER=phoenix
+APP_ROOT=/home/phoenix/git/phoenix-sample
+MIX_ENV=prod
+START_CMD="rel/hello_phoenix/bin/hello_phoenix start -detached"
+STOP_CMD="rel/hello_phoenix/bin/hello_phoenix stop"
+
+export PATH=/usr/elixir/bin:/usr/local/bin:$PATH
+cd $APP_ROOT || exit 1
+
+case $1 in
+  start)
+    echo -n $"Starting $PROG_NAME: "
+    sudo -u phoenix $START_CMD
+    ;;
+  stop)
+    echo -n $"Shutting down $PROG_NAME: "
+    sudo -u phoenix $STOP_CMD
+    ;;
+  restart)
+    echo -n $"Restarting $PROG_NAME: "
+    sudo -u phoenix $STOP_CMD
+    sudo -u phoenix $START_CMD
+    ;;
+  *)
+    echo >&2 "Usage: $0 <start|stop|restart>"
+    exit 1
+    ;;
+esac
+exit $?
+```
+
+このスクリプトにより ``sudo service todo-phoenix start`` で起動し、``sudo service todo-phoenix stop`` で停止します。ここで注意するのは、起動時は ``hello_phoenix start -detached`` と -detached オプションを付けて起動することです。start だけだとデーモンで実行してもコンソールに出力しているらしく、負荷をかけるとメモリー不足となります。
+
+詳しくは http://qiita.com/maruware/items/7765837384795b1d9659[phoenixでmix releaseしたときにメモリが溢れるのを解決 - Qiita] を参考にしてください。
+
+

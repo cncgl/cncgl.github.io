@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>お問い合わせ</title>
+  <link rel="stylesheet" href="/hubpress/styles/bootstrap.css">
+  <script src="/hubpress/scripts/vendor/bootstrap.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2 class="p-md bg-light lt b-b font-bold">お問い合わせ</h2>
+    <hr/>
+    <form action="//formspree.io/concigel@gmail.com" method="POST">
+      <fieldset  class="form-group">
+        <input type="text" name="name" class="form-control" placeholder="お名前">
+      </fieldset >
+      <fieldset  class="form-group">
+        <input type="email" name="_replyto" class="form-control" placeholder="ご連絡先メールアドレス">
+      </fieldset >
+      <fieldset  class="form-group">
+        <textarea id="msg" rows="15" name="message" class="form-control"  placeholder="メッセージ"></textarea>
+      </fieldset >
+      <input type="hidden" name="_next" value="/contact/thanks.html" />
+      <input id="submit" type="submit" class="btn btn-info m-t" value="送る" />
+    </form>
+  </div>
+</body>
+</html>

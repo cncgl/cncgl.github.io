@@ -1,0 +1,20 @@
+= ATS に対応した　HTTPSサーバーを構築する
+
+:hp-tags: HTTPS
+
+
+## ダメだった例
+
+https://hirooka.pro/?p=5262 を参考にJava の Keytool で Jetty で構築した。
+
+```
+2015-10-10 22:58:58.834 todo-client2[5621:1553822] NSURLSession/NSURLConnection HTTP load failed (kCFStreamErrorDomainSSL, -9813)
+2015-10-10 22:58:59.009 todo-client2[5621:1553822] NSURLSession/NSURLConnection HTTP load failed (kCFStreamErrorDomainSSL, -9813)
+Error Domain=NSCocoaErrorDomain Code=256 "The file “todos” couldn’t be opened." UserInfo={NSURL=https://192.168.24.42:9443/api/todos}
+```
+
+接続できなかった。ブラウザからは接続できます。
+
+
+
+

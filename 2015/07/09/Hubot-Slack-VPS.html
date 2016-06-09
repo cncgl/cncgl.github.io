@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <title>Hubot-Slack を VPS へインストール</title>
+    <meta name="description" content="" />
+
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="shortcut icon" href="//cncgl.github.io/themes/ichi/favicon.ico">
+
+    <script type="text/javascript" src="//cncgl.github.io/themes/ichi/assets/js/vendor/fastclick.js?v=1.0.0"></script>
+    <script type="text/javascript" src="//cncgl.github.io/themes/ichi/assets/js/vendor/modernizr.js?v=1.0.0"></script>
+
+
+    <link rel="stylesheet" type="text/css" href="//cncgl.github.io/themes/ichi/assets/css/normalize.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//cncgl.github.io/themes/ichi/assets/css/foundation.min.css?v=1.0.0" />
+    <!--[if lte IE 8]>
+        <link rel="stylesheet" type="text/css" href="//cncgl.github.io/themes/ichi/assets/css/outdatedBrowser.min.css?v=1.0.0">
+    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="//cncgl.github.io/themes/ichi/assets/fonts/foundation-icons/foundation-icons.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//cncgl.github.io/themes/ichi/assets/css/styles.css?v=1.0.0" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans:300,700,400|Source+Sans+Pro:300,400,600,700,900,300italic,400italic,600italic,700italic,900italic" />
+
+    <link rel="canonical" href="https://cncgl.github.io/2015/07/09/Hubot-Slack-VPS.html" />
+    
+    <meta property="og:site_name" content="FORGET ME NOT" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Hubot-Slack を VPS へインストール" />
+    <meta property="og:description" content="はじめに hubotを VPS にインストールする手順です。同様のエントリーは多いのですが、記事が古くてうまく動作しない例が多いので改めて書いてみました。heroku は料金体系が変わり、無料だと連続運用できなくなったため、安いVPS で運用しようと考える方も多いかと思いますので、そういった方々の参考になればと思います。 インストールする VPS の OS として CentOS 6.6 で確認しました。他の OSの場合は適宜読み替えてください。 Node.js, npm  のインストール Node.js とそのパッケージマネージャーである npm が必..." />
+    <meta property="og:url" content="https://cncgl.github.io/2015/07/09/Hubot-Slack-VPS.html" />
+    <meta property="article:published_time" content="2015-07-08T15:00:00.000Z" />
+    <meta property="article:modified_time" content="2015-09-01T05:43:38.142Z" />
+    <meta property="article:tag" content="hubot" />
+    <meta property="article:tag" content="slack" />
+    
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Hubot-Slack を VPS へインストール" />
+    <meta name="twitter:description" content="はじめに hubotを VPS にインストールする手順です。同様のエントリーは多いのですが、記事が古くてうまく動作しない例が多いので改めて書いてみました。heroku は料金体系が変わり、無料だと連続運用できなくなったため、安いVPS で運用しようと考える方も多いかと思いますので、そういった方々の参考になればと思います。 インストールする VPS の OS として CentOS 6.6 で確認しました。他の OSの場合は適宜読み替えてください。 Node.js, npm  のインストール Node.js とそのパッケージマネージャーである npm が必..." />
+    <meta name="twitter:url" content="https://cncgl.github.io/2015/07/09/Hubot-Slack-VPS.html" />
+    
+    <script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "publisher": "FORGET ME NOT",
+    "author": {
+        "@type": "Person",
+        "name": "cncgl",
+        "image": "https://avatars.githubusercontent.com/u/13092383?v=3",
+        "url": "undefined/author/undefined",
+        "sameAs": "http://cncgl.github.io/"
+    },
+    "headline": "Hubot-Slack を VPS へインストール",
+    "url": "https://cncgl.github.io/2015/07/09/Hubot-Slack-VPS.html",
+    "datePublished": "2015-07-08T15:00:00.000Z",
+    "dateModified": "2015-09-01T05:43:38.142Z",
+    "keywords": "hubot,  slack",
+    "description": "はじめに hubotを VPS にインストールする手順です。同様のエントリーは多いのですが、記事が古くてうまく動作しない例が多いので改めて書いてみました。heroku は料金体系が変わり、無料だと連続運用できなくなったため、安いVPS で運用しようと考える方も多いかと思いますので、そういった方々の参考になればと思います。 インストールする VPS の OS として CentOS 6.6 で確認しました。他の OSの場合は適宜読み替えてください。 Node.js, npm  のインストール Node.js とそのパッケージマネージャーである npm が必..."
+}
+    </script>
+
+    <meta name="generator" content="Ghost ?" />
+    <link rel="alternate" type="application/rss+xml" title="FORGET ME NOT" href="https://cncgl.github.io/rss" />
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/default.min.css">
+</head>
+<body class="post-template tag-hubot tag-slack">
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdate" href="http://outdatedbrowser.com/">Update my browser now</a></p>
+</div>
+
+<nav class="top-bar hide-for-large-up" data-topbar >
+  <ul class="title-area">
+    <li class="name">
+
+    </li>
+    <li class="home"><a class="fi-home" href="https://cncgl.github.io"></a></li>
+    <li class="toggle-topbar"><a href="#" id="trigger-overlay" class="fi-list"></a></li>
+  </ul>
+
+<div class="overlay overlay-scale">
+    <button type="button" class="overlay-close">Close</button>
+    <nav>
+        <ul>
+            <li><a href="https://cncgl.github.io">Home</a></li>
+        </ul>
+    </nav>
+</div>
+
+</nav>
+
+<div class="row">
+
+<div class="small-16 medium-16 large-4 columns right head-area" >
+
+<header class="site-head">
+    <div class="vertical">
+        <div class="site-head-content inner">
+            <ul class="side-nav blog-menu show-for-large-up">
+                <li><a class="fi-home" href="https://cncgl.github.io"></a></li>
+                <li><a class="fi-torso" href="https://cncgl.github.io/about"></a></li>
+                <li><a class="fi-mail" href="https://cncgl.github.io/contact"></a></li>
+            </ul>
+            <a class="blog-logo" href="https://cncgl.github.io"><img alt="FORGET ME NOT" src="/images/IMG_20130130_140211.jpg" alt="Blog Logo" /></a>
+            <h1 class="blog-title">FORGET ME NOT</h1>
+            <hr>
+            <p class="blog-description">備忘録</p>
+            <div class="blog-network">
+<!--                 <a href="#" class="fi-social-pinterest"></a>
+                <a href="#" class="fi-social-linkedin"></a>
+                <a href="#" class="fi-social-behance"></a>
+                <a href="#" class="fi-social-deviant-art"></a>
+                <a href="#" class="fi-social-dribbble"></a>
+                <a href="#" class="fi-social-flickr"></a>
+                <a href="#" class="fi-social-github"></a>
+                <a href="#" class="fi-social-skype"></a>
+                <a href="#" class="fi-social-snapchat"></a>
+                <a href="#" class="fi-social-steam"></a>
+                <a href="#" class="fi-social-xbox"></a>
+                <a href="#" class="fi-social-reddit"></a> -->
+                  <a href="https://github.com/cncgl" class="fi-social-github"></a>
+                  <a href="https://twitter.com/subcigel" class="fi-social-twitter"></a>
+                  <a href="https://www.facebook.com/shigeru.kondoh.9" class="fi-social-facebook"></a>
+            </div>
+        </div>
+    </div>
+</header>
+
+</div>
+
+
+<div class="small-16 medium-16 large-12 columns main-column left">
+    
+
+<main class="content" role="main">
+
+    <article class="post tag-hubot tag-slack">
+
+
+            <h1 class="post-title">Hubot-Slack を VPS へインストール</h1>
+
+            <span class="post-meta label"><time datetime="2015-07-09">09 Jul 2015</time></span>
+
+            <section class="post-content">
+                <div class="sect1">
+<h2 id="__">はじめに</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>hubotを VPS にインストールする手順です。同様のエントリーは多いのですが、記事が古くてうまく動作しない例が多いので改めて書いてみました。heroku は料金体系が変わり、無料だと連続運用できなくなったため、安いVPS で運用しようと考える方も多いかと思いますので、そういった方々の参考になればと思います。</p>
+</div>
+<div class="paragraph">
+<p>インストールする VPS の OS として CentOS 6.6 で確認しました。他の OSの場合は適宜読み替えてください。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_node_js_npm">Node.js, npm  のインストール</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Node.js とそのパッケージマネージャーである npm が必要です。Node.js のバージョン管理システムである nvm もインストールします。</p>
+</div>
+<div class="paragraph">
+<p>現時点で最新である io.js v2.3.3 をインストールします。v2.3.2 にはセキュリティーホールが見つかっているので v2.3.3 以上をインストールしてください。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ git clone https://github.com/creationix/nvm.git ~/.nvm
+$ source ~/.nvm/nvm.sh
+$ nvm ls-remote
+$ nvm install iojs</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>ログイン時に有効にするためには、~/.bashrc, ~/.profile, ~/.zshrc に使用しているシェルに応じて追記します。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>source ~/.nvm/nvm.sh
+nvm default iojs-v2.3.3</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>npm は node.js をインストールしたときにインストールされます。npm を使って npm自信をアップデートできます。執筆時の最新バージョンは 2.12.1 ですが、ベータ版の 3.1.0
+が利用できます。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ npm i -g npm@3
+$ npm -v
+3.1.0</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hubot">hubot のインストール</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>hubot をインストールします。hubot は coffee で書かれているため coffee-script もインストールします。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ npm i -g hubot coffee-script</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_redis">redis のインストール</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>hubot はデータの永続化に redis を使用するので redis をインストールします。CentOS の場合 EPEL リポジトリが必要です。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ sudo rpm -ivh http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
+$ sudo yum install -y redis
+$ sudo chkconfig redis on
+$ sudo service redis start</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_hubot_2">hubot のひな形作成</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>hubot のひな形を作成します。昔のバージョンでは hubot -c &lt;botname&gt; で作成しましたが、今は非推奨となり yoeman による生成が推奨されています。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ npm i -g yo generator-hubot
+$ mkdir hubot1 &amp;&amp; cd $_
+$ yo hubot</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>いろいろ聞かれますので、adapter は slack にします。bot 名は condroid として以後説明します。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicMkhsYk9vUGtHRGs" alt="uc?export=view&amp;id=0BxX1sdAOmTicMkhsYk9vUGtHRGs">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="___2">動作確認</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_shell">shell で確認</h3>
+<div class="paragraph">
+<p>きちんとインストールされたか確認します。bin/hubot を bin/hubot.sh にリネームします。これは後に pm2 でデーモン化するときに必要になります。今回 heroku は使いませんので、heroku の外部スクリプトを削除します。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ mv bin/hubot bin/hubot.sh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>external-scripts.json</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>[
+  "hubot-diagnostics",
+  "hubot-help",
+  "hubot-heroku-keepalive",  # この行を削除
+  "hubot-google-images",
+  "hubot-google-translate",
+  "hubot-pugme",
+  "hubot-maps",
+  "hubot-redis-brain",
+  "hubot-rules",
+  "hubot-shipit"
+]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>package.json</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>{
+  "name": "condroid",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Shigeru Kondou &lt;concigel@gmail.com&gt;",
+  "description": "A simple helpful robot for your Company",
+  "dependencies": {
+    "hubot": "^2.13.2",
+    "hubot-diagnostics": "0.0.1",
+    "hubot-google-images": "^0.1.5",
+    "hubot-google-translate": "^0.2.0",
+    "hubot-help": "^0.1.1",
+    "hubot-heroku-keepalive": "0.0.4",   # この行を削除
+    "hubot-maps": "0.0.2",
+    "hubot-pugme": "^0.1.0",
+    "hubot-redis-brain": "0.0.3",
+    "hubot-rules": "^0.1.1",
+    "hubot-scripts": "^2.16.1",
+    "hubot-shipit": "^0.2.0",
+    "hubot-slack": "^3.3.0"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>shell アダプターを使用して確認します。&lt;bot name&gt; help でこの bot の持っているコマンドが表示されますのでいろいろ試してください。ここでは ping コマンドで確認しています。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ bin/hubot.sh -a shell
+condroid &gt; condroid ping
+PONG</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>CTRL+C で終了します。</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_slack">Slack で確認</h3>
+<div class="paragraph">
+<p>Slack のIntegration 設定にて Hubot Integration を追加します。名前は先ほどの bot名にします。</p>
+</div>
+<div class="paragraph">
+<p>追加すれば、Configured Integrations タブに Hubot がありますので、先ほど追加した設定を選択します。</p>
+</div>
+<div class="paragraph">
+<p>API Token にアクセストークンがあるのでコピーします。</p>
+</div>
+<div class="paragraph">
+<p>bin/hubot.sh を開き、環境変数 HUBOT_SLACK_TOKEN を設定します。</p>
+</div>
+<div class="paragraph">
+<p>bin/hubot.sh</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>#!/bin/sh
+
+set -e
+
+npm install
+export PATH="node_modules/.bin:node_modules/hubot/node_modules/.bin:$PATH"
+export HUBOT_SLACK_TOKEN=&lt;API TOKEN&gt;    # この行を追加する。先程の API TOKEN を貼り付ける
+
+exec node_modules/.bin/hubot --adapter slack --name "condroid" "$@"</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>bin/hubot.sh を実行し、Slack で確認します。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="https://drive.google.com/uc?export=view&id=0BxX1sdAOmTicV1dGck1WR2lYNVU" alt="uc?export=view&amp;id=0BxX1sdAOmTicV1dGck1WR2lYNVU">
+</div>
+</div>
+<div class="paragraph">
+<p>bot名 &lt;コマンド名&gt; という書き方ができなくなっていて、@&lt;bot名&gt; &lt;コマンド名&gt; とするか、bot にダイレクトメッセージで直接コマンドを叩きます。bot はデフォルトでは #general にしか所属していませんが /invite @&lt;bot 名&gt; で他のチャンネルにも招待できます。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="___3">デーモン化</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>このままだとログインシェルを抜けると Bot も終了しますのでデーモン化します。デーモン化には pm2 を使用します。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>$ npm i -g pm2
+$ pm2 start bin/hubot.sh</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>pm2 list で一覧が表示され、pm2 でヘルプが表示されますので、参考にしてください。</p>
+</div>
+<div class="paragraph">
+<p>ではよい hubot ライフを。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="___4">参考</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>npm - <a href="https://github.com/npm/npm" class="bare">https://github.com/npm/npm</a></p>
+</div>
+<div class="paragraph">
+<p>pm2 - <a href="https://github.com/Unitech/pm2" class="bare">https://github.com/Unitech/pm2</a></p>
+</div>
+<div class="paragraph">
+<p>GitHub製フレームワークHubotの概要とインストール、チャットアプリと連携する基本的な使い方 - <a href="http://www.atmarkit.co.jp/ait/articles/1408/20/news035.html" class="bare">http://www.atmarkit.co.jp/ait/articles/1408/20/news035.html</a></p>
+</div>
+<div class="paragraph">
+<p>Docker + Yeoman + Hubot + Slack で簡単bot作成 - <a href="http://blog.fenneclab.com/docker-yeoman-hubot-slack/" class="bare">http://blog.fenneclab.com/docker-yeoman-hubot-slack/</a></p>
+</div>
+</div>
+</div>
+                        <aside class="tags fi-pricetag-multiple">Posted on <a href="https://cncgl.github.io/tag/hubot">hubot</a>, <a href="https://cncgl.github.io/tag/slack"> slack</a></aside>
+            </section>
+            <hr>
+            <footer class="post-footer">
+
+                <section class="share">
+                    <h4>Liked this post ? Share it.</h4>
+                    <a class="fi-social-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://cncgl.github.io/2015/07/09/Hubot-Slack-VPS.html"
+                        onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    </a>
+                    <a class="fi-social-twitter" href="https://twitter.com/share?text=Hubot-Slack%20%E3%82%92%20VPS%20%E3%81%B8%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB&amp;url=https://cncgl.github.io/2015/07/09/Hubot-Slack-VPS.html"
+                        onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    </a>
+                    <a class="fi-social-google-plus" href="https://plus.google.com/share?url=https://cncgl.github.io/2015/07/09/Hubot-Slack-VPS.html"
+                       onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    </a>
+                </section>
+
+                <section class="author">
+                    <header>
+                        <span>About the author</span>
+                    </header>
+                    <section>
+                        <h4>cncgl</h4>
+                        <img src="https://avatars.githubusercontent.com/u/13092383?v=3">
+                        <span>Japan</span>
+                        <a href="http://cncgl.github.io/">http://cncgl.github.io/</a>
+                    </section>
+                    <footer>
+                         <p></p>
+                    </footer>
+                </section>
+
+        <div class="clearfix"></div>
+                    <hr>
+
+            </footer>
+
+        <h3 class="title-disqus"><span class="fi-comments"></span>Discussions</h3>
+
+
+
+
+        <section class="post-comments">
+          <div id="disqus_thread"></div>
+          <script type="text/javascript">
+          var disqus_shortname = 'concigel'; // required: replace example with your forum shortname
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+          })();
+          </script>
+          <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+          <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+        </section>
+
+
+    </article>
+
+</main>
+
+</div>
+
+</div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.min.js?v="></script> <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/highlight.min.js?v="></script> 
+      <script type="text/javascript">
+        jQuery( document ).ready(function() {
+          // change date with ago
+          jQuery('ago.ago').each(function(){
+            var element = jQuery(this).parent();
+            element.html( moment(element.text()).fromNow());
+          });
+        });
+
+        hljs.initHighlightingOnLoad();      
+      </script>
+
+    <!--[if lte IE 8]>
+        <script type="text/javascript" src="//cncgl.github.io/themes/ichi/assets/js/outdatedBrowser.min.js?v=1.0.0"></script>
+    <![endif]-->
+    <script type="text/javascript" src="//cncgl.github.io/themes/ichi/assets/js/min/built.js?v=1.0.0"></script>
+
+    <script>
+      $(document).foundation();
+    </script>
+
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-36135897-6', 'auto');
+    ga('send', 'pageview');
+
+    </script>
+</body>
+</html>

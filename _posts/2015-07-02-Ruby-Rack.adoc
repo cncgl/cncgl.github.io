@@ -1,0 +1,50 @@
+= Ruby の Rack によるワンライナー
+
+:hp-tags: ruby, rack
+
+Perl はいまひとつ一般的でないので Ruby でのワンライナーを考える。
+Ruby のインストールはぐぐらびりてぃが高いので省略する。
+
+
+### Rack のインストール
+
+```
+gem install rack
+```
+
+### ワンライナー
+
+```
+rackup -b 'run lambda {|env| ["200", {"Content-Type" => "text/html", ["good rack"]] }'
+```
+
+ポート番号9292 で起動する。
+
+### アクセスカウンター
+
+昔懐かしいアクセスカウンターを考える。今風なら JSON 出力の方がいいかもしれない。
+さすがに１行では無理だったので、ファイルを作った。
+
+
+count_app.rb
+```
+class CountApp
+  @@count = 0
+  def call(env)
+    @@count += 1
+    [
+      200, 
+      {'Content-Type' => 'text/html'},
+      ["You are #{@@count}"]
+    ]
+  end
+end
+```
+
+config.ru
+```
+require './count_app.rb'
+run CountApp.new
+```
+
+実行は rackup でOK。

@@ -1,10 +1,1 @@
-{
-  "meta": {
-    "username": "put your username here",
-    "repositoryName": "put your repository name here",
-    "branch": "master"
-  },
-  "theme": {
-    "name": "Casper"
-  }
-}
+{"meta":{"username":"cncgl","repositoryName":"cncgl.github.io","branch":"master"},"site":{"title":"FORGET ME NOT","description":"備忘録","logo":"/images/IMG_20130130_140211.jpg","googleAnalytics":"UA-36135897-6","disqus":"concigel","url":"https://cncgl.github.io"},"socialnetwork":{"email":"concigel@gmail.com","twitter":"https://twitter.com/subcigel","facebook":"https://www.facebook.com/shigeru.kondoh.9","github":"https://github.com/cncgl"},"theme":{"name":"ichi","url":"//cncgl.github.io/themes/ichi"}}

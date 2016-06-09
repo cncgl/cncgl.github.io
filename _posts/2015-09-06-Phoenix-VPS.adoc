@@ -1,0 +1,135 @@
+= Phoenix を VPS へインストールする
+
+:hp-tags: phoenix, elixir
+
+## はじめに
+
+CentOS 6.6 の載った VPS に Phoenix サーバーを稼働させたくて設定を行ったので、手順をメモしました。
+
+## Erlang, Elixir のインストール
+
+Erlang のRPM があるが依存関係を解決できないのでソースからビルドする。
+
+```
+$ wget http://www.erlang.org/download/otp_src_18.0.tar.gz
+$ tar zxvf otp_src_18.0.tar.gz
+$ cd otp_src_18.0
+$ ./configure
+$ make
+$ sudo make install
+```
+バイナリービルドがあるのでインストールする。
+
+```
+$ wget https://github.com/elixir-lang/elixir/releases/download/v1.0.5/Precompiled.zip
+$ sudo unzip Precompiled.zip -d /usr/elixir
+$ export PATH=/usr/elixir/bin:$PATH
+```
+
+
+## PostgreSQL のインストール
+
+データベースは標準では MySQL が動いているのですが、Phoenix のデフォルトサーバーが PostgreSQL なのと、RDB としては PostgreSQL の方が優れていると思うので PostgreSQL をインストールしました。
+
+詳しくは https://wiki.postgresql.org/wiki/YUM_Installation[PostgreSQL の Wiki] の通りですが、CentOS6 のPostgres は腐っているのでリポジトリを導入してインストールします。
+
+標準のインストールリポジトリを殺します。/etc/yum.repos.d/CentOS-Base.repo の[base]と[updates]のセクションにexclude を設定します。
+
+```
+exclude=postgresql*
+```
+
+リポジトリとPostgresql9.4 のインストール
+```
+$ sudo yum localinstall http://yum.postgresql.org/9.4/redhat/rhel-6-x86_64/pgdg-centos94-9.4-1.noarch.rpm
+$ sudo yum install postgresql94-server
+
+```
+
+データディレクトリの作成・サービスの起動・サービスの登録
+```
+$ sudo service postgresql-9.4 initdb
+$ sudo service postgresql-9.4 start
+$ sudo chkconfig postgresql-9.4 on
+```
+postgres ユーザーのパスワード設定
+
+```
+$ sudo passwd postgres   # ユーザーのパスワード変更
+$ su - postgres          # psql 起動の確認
+```
+psql の認証方法を変更する
+
+```
+$ sudo vim /var/lib/pgsql/9.4/data/pg_hba.conf
+(中略)
+local   all             postgres                                password
+
+# TYPE  DATABASE        USER            ADDRESS                 METHOD
+
+# "local" is for Unix domain socket connections only
+local   all             all                                     password
+# IPv4 local connections:
+host    all             all             127.0.0.1/32            password
+# IPv6 local connections:
+host    all             all             ::1/128                 ident
+(EOF)
+
+$ sudo service postgresql-9.4 restart
+
+```
+データベースパスワードの変更
+
+```
+$ psql
+ALTER USER postgres PASSWORD 'postgres';   # phoneix-sample のパスワードはデフォルトで postgres になっているので
+```
+
+これにより postgres 以外のユーザーからも psql -U postgres -W で postgres にログインできます。
+
+
+## node.js のインストール
+
+node.js をインストールします。nvm をインストールし、npm を v3.0 にします。
+
+```
+$ git clone https://github.com/creationix/nvm.git ~/.nvm
+$ . ~/.nvm/nvm.sh           # .profile, .bash_profile, zshrc などに追加します。
+$ nvm ls-remote             # 最新バージョンを検索
+$ nvm install iojs-v3.3.0   # 最新バージョンを指定
+$ npm i -g npm@3
+
+```
+
+
+## その他システム設定
+
+Locale が正しく設定されていないと警告が出るので設定します。CentOS6 におけるロケールの設定は /etc/sysconfig/i18n なのでこれを編集します（CentOS7では localectl を使用します）。詳しくは http://zero-config.com/centos/changelocale.html を参照ください。
+
+```
+# cat /etc/sysconfig/i18n
+LANG="ja_JP.UTF-8"
+SYSFONT="latarcyrheb-sun16"
+```
+これはルートの環境のようなのでログインユーザーは
+```
+export LANG="ja_JP.UTF-8"
+```
+のようにします。これを .profile, .bash_profile, zshrc などに記述しておくといいでしょう。
+
+
+
+
+## サンプルアプリをインストールして確認
+
+phoenix のサンプルプログラムをインストールして確認します。
+
+```
+$ git clone https://github.com/cncgl/phoenix-sample.git
+$ cd phonix-sample
+$ mix deps.get
+$ mix ecto.create
+$ mix ecto.migrate
+$ npm i
+$ mix phoenix.server
+```
