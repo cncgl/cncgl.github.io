@@ -2,7 +2,6 @@
 
 :hp-tags: etc
 
-## こちらまでお願いします
 
 *concigel blog* https://concigel.dev
 
