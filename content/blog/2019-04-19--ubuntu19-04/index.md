@@ -1,7 +1,7 @@
 ---
 title: Ubuntu19.04
 date: "2019-04-19"
-description: memo for install
+description: "Ubuntu 19.04 が出たので install log を残しておこうと思う。"
 category: "Linux"
 cover: iterograph_2019_04_19.png
 ---

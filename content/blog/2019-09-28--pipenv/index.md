@@ -1,7 +1,7 @@
 ---
 title: Pipenv による Web Application の構築
 date: "2019-09-28"
-description: "Web Application with Pipenv"
+description: "以前は Python の構築は virtualenv で行なっていたが、他のプログラム言語と比べて構成が異なるのが気になって、Pipenv について調べてみた。"
 category: Python
 cover: iterograph_2019_09_28.png
 ---

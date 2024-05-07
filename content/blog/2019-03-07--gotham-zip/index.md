@@ -1,7 +1,7 @@
 ---
 title: 郵便番号検索APIを作り直した
 date: "2019-03-07"
-description: "Japanese Zip Code API again"
+description: "前回、サーバーレスで郵便番号検索を作ったのですが、S3 のランニングコストがもったいないので、VPS に移すことにしました。VPS は使っても使わなくても料金変わらないので。"
 category: "rust"
 cover: iterograph_2019_03_08.png
 ---

@@ -1,7 +1,7 @@
 ---
 title: Scrum Masters Night に行ってきました
 date: "2019-09-02"
-description: ”I went to Scrum Masters Night”
+description: "以前、スクラムのプロジェクトをやっていたことがあり、自分でも広められないかと思い、Screum Masters Night へ行ってきました。参加するのは、全くの初めてです。"
 category: "Scrum"
 cover: iterograph_2019_09_03.png
 ---

@@ -1,14 +1,13 @@
 ---
 title: Flutter のアイコン作成
 date: "2019-09-01"
-description: ”Make the icons for Flutter”
+description: "Android 8.0 より Adaptive Icon が採用され、Flutter でアイコンを設定するとき、気をつけないと iOS と Androit のどちらかがうまく表示できてないといことが起こるので、その設定方法を残す。"
 category: "Flutter"
 cover: iterograph_2019_09_01.png
 ---
 
 Android 8.0 より Adaptive Icon が採用され、Flutter でアイコンを設定するとき、
-気をつけないと iOS と Androit のどちらかがうまく表示できてないといことが怒るので、
-その設定方法を残す。
+気をつけないと iOS と Androit のどちらかがうまく表示できてないといことが起こるので、その設定方法を残す。
 
 注）この記事は未調査部分があるため、暫定的な内容となっている。
 

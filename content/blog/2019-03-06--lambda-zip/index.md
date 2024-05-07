@@ -1,7 +1,7 @@
 ---
 title: 郵便番号検索 API を作った
 date: "2019-03-06"
-description: "Japanese Zip Code API"
+description: "昨年秋、AWS Lambda に Ruby が追加されました。勉強を兼ねて郵便番号検索の API を実装しました。"
 category: "aws"
 cover: iterograph_2019_03_07.png
 ---

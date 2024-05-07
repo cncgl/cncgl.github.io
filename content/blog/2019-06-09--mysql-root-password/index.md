@@ -1,7 +1,7 @@
 ---
 title: mysql のパスワード変更
 date: "2019-06-09"
-description: ”Change MySQL root password”
+description: "MySQL の root パスワード変更をするときにハマってしまったのでメモしておく。"
 category: "MySQL"
 cover: iterograph_2019_06_09.png
 ---

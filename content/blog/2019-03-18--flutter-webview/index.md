@@ -1,7 +1,7 @@
 ---
 title: Flutter でガワアプリ
 date: "2019-03-18"
-description: Hybrid Application
+description: "Flutter でガワアプリを作ろうと思う。"
 category: "Flutter"
 cover: iterograph_2019_03_18.png
 ---
